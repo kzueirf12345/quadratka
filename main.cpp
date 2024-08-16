@@ -56,7 +56,7 @@ void calculate(int a, int b, int c, double* answer1, double* answer2, enum Outpu
             *state = NOT_REAL_SOLUTIONS;
         } else if (discriminant == 0) {
             *state = ONE_SOLUTIONS;
-            *answer1 = -b * 1. / 2 * a;
+            *answer1 = -b * 1. / (2 * a);
         } else {
             *state = TWO_SOLUTIONS;
             double numerator1 = -b - sqrt((double)discriminant),
