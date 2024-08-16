@@ -5,6 +5,8 @@
 #define NEPS -10e-7
 
 int gcd(int a, int b);
+void print_one_answer(double answer);
+void print_two_answer(double answer1, double answer2);
 
 int main() {
     int a, b, c;
@@ -15,92 +17,49 @@ int main() {
     printf("Input third coef: ");
     scanf("%d", &c);
 
-    printf("anwer: ");
+    printf("answer: ");
     if (a == 0) {
         if (b == 0) {
             printf(c == 0 ? "x - any number\n" : "no solutions\n");
         } else {
-            if (c % b == 0) {
-                int answer = -c / b;
-                printf("x = %d\n", answer);
-            } else {
-            int numerator = -c;
-            int denominator = b;
-
-            double answer = numerator / denominator;
-            int sign = (numerator == 0 ? 0 : (int)answer / abs((int)answer));
-
-            numerator = abs(numerator);
-            denominator = abs(denominator);
-
-            int gcd_num = gcd(numerator, denominator);
-            numerator = sign * numerator / gcd_num;
-            denominator /= gcd_num;
-
-            printf("x = %f or %d/%d\n", answer, numerator, denominator);
-            }
+            print_one_answer(-c * 1. / b);
         }
     } else {
         int discriminant = b * b - 4 * a * c;
         if (discriminant < 0) {
             printf("solutions is not real\n");
         } else if (discriminant == 0) {
-            int numerator = -b;
-            int denominator = 2 * a;
-
-            double answer = numerator / denominator;
-            int sign = (numerator == 0 ? 0 : (int)answer / abs((int)answer));
-
-            numerator = abs(numerator);
-            denominator = abs(denominator);
-
-            int gcd_num = gcd(numerator, denominator);
-            numerator = sign * numerator / gcd_num;
-            denominator /= gcd_num;
-
-            printf("x = %f or %d/%d\n", answer, numerator, denominator);
+            print_one_answer(-b * 1. / 2 * a);
         } else {
             double discriminant_double = discriminant;
             double numerator1 = -b - sqrt(discriminant_double),
                    numerator2 = -b + sqrt(discriminant_double);
             int denominator = 2 * a;
-
-            int numerator1_int = (int)numerator1, numerator2_int = (int)numerator2;
-            bool is_numerator1_int = (abs((double)numerator1_int - numerator1) < EPS),
-                 is_numerator2_int = (abs((double)numerator2_int - numerator2) < EPS);
-
-            double answer1 = numerator1 / denominator, answer2 = numerator2 / denominator;
-
-            if (is_numerator1_int) {
-                int sign1 = (numerator1_int == 0 ? 0 : (int)answer1 / abs((int)answer1));
-
-                numerator1_int = abs(numerator1_int);
-                denominator = abs(denominator);
-
-                int gcd_num1 = gcd(numerator1_int, denominator);
-                numerator1 = sign1 * numerator1 / gcd_num1;
-                int denominator1 = denominator / gcd_num1;
-                printf("x = %f or %d/%d, ", answer1, numerator1_int, denominator1);
-            } else {
-                printf("x = %f, ", answer1);
-            }
-
-            if (is_numerator2_int) {
-                int sign2 = (numerator2_int == 0 ? 0 : (int)answer2 / abs((int)answer2));
-
-                numerator2_int = abs(numerator2_int);
-                denominator = abs(denominator);
-
-                int gcd_num2 = gcd(numerator2_int, denominator);
-                numerator2 = sign2 * numerator2 / gcd_num2;
-                int denominator2 = denominator / gcd_num2;
-                printf("%f or %d/%d\n", answer2, numerator2_int, denominator2);
-            } else {
-                printf("%f\n", answer2);
-            }
+            print_two_answer(numerator1 / denominator, numerator2 / denominator);
         }
     }
     return 0;
 }
 
 int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
+
+void print_one_answer(double answer) {
+    if (abs(answer - (int)answer) < EPS) {
+        printf("x = %d\n", (int)answer);
+    } else {
+        printf("x = %f\n", answer);
+    }
+}
+
+void print_two_answer(double answer1, double answer2) {
+    if (abs(answer1 - (int)answer1) < EPS) {
+        printf("x = %d, ", (int)answer1);
+    } else {
+        printf("x = %f, ", answer1);
+    }
+    if (abs(answer2 - (int)answer2) < EPS) {
+        printf("%d\n", (int)answer2);
+    } else {
+        printf("%f\n", answer2);
+    }
+}
