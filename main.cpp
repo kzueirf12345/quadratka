@@ -11,75 +11,79 @@ enum CountSolutions {
     NOT_REAL_SOLUTIONS
 };
 
-void input(double* const a, double* const b, double* const c);
+struct Coefs {
+    double a;
+    double b;
+    double c;
+};
 
-CountSolutions linear_calculate(const double b, const double c, double* const answer1);
+void input(Coefs* coefs);
 
-CountSolutions quadratic_calculate(const double a, const double b, const double c,
-                                   double* const answer1, double* const answer2);
+CountSolutions linear_calculate(const Coefs* const coefs, double* const answer1);
 
-CountSolutions calculate(const double a, const double b, const double c, double* const answer1,
-                         double* const answer2);
+CountSolutions quadratic_calculate(const Coefs* const coefs, double* const answer1,
+                                   double* const answer2);
+
+CountSolutions calculate(const Coefs* const coefs, double* const answer1, double* const answer2);
 
 double fix_double_zero(double num);
 
 void print(const double answer1, const double answer2, const CountSolutions count_solutions);
 
 int main() {
-    double a = 0, b = 0, c = 0;
-    input(&a, &b, &c);
+    Coefs coefs = {0, 0, 0};
+    input(&coefs);
 
     double answer1 = 0;
     double answer2 = 0;
-    CountSolutions count_solutions = calculate(a, b, c, &answer1, &answer2);
+    CountSolutions count_solutions = calculate(&coefs, &answer1, &answer2);
 
     print(answer1, answer2, count_solutions);
 
     return 0;
 }
 
-void input(double* const a, double* const b, double* const c) {
+void input(Coefs* coefs) {
     printf("Input first coef: ");
-    scanf("%lf", a);
+    scanf("%lf", &coefs->a);
     printf("Input second coef: ");
-    scanf("%lf", b);
+    scanf("%lf", &coefs->b);
     printf("Input third coef: ");
-    scanf("%lf", c);
+    scanf("%lf", &coefs->c);
 }
 
-CountSolutions linear_calculate(const double b, const double c, double* const answer1) {
-    if (abs(b) < EPS) {
-        if (abs(c) < EPS) {
+CountSolutions linear_calculate(const Coefs* const coefs, double* const answer1) {
+    if (abs(coefs->b) < EPS) {
+        if (abs(coefs->c) < EPS) {
             return INF_SOLUTIONS;
         }
         return ZERO_SOLUTIONS;
     } else {
-        *answer1 = -c / b;
+        *answer1 = -coefs->c / coefs->b;
         return ONE_SOLUTIONS;
     }
 }
 
-CountSolutions quadratic_calculate(const double a, const double b, const double c,
-                                   double* const answer1, double* const answer2) {
-    double discriminant = b * b - 4 * a * c;
+CountSolutions quadratic_calculate(const Coefs* const coefs, double* const answer1,
+                                   double* const answer2) {
+    double discriminant = coefs->b * coefs->b - 4 * coefs->a * coefs->c;
     if (discriminant < 0) {
         return NOT_REAL_SOLUTIONS;
     } else if (abs(discriminant) < EPS) {
         return ONE_SOLUTIONS;
-        *answer1 = -b / (2 * a);
+        *answer1 = -coefs->b / (2 * coefs->a);
     } else {
-        *answer1 = (-b - sqrt(discriminant)) / (2 * a);
-        *answer2 = (-b + sqrt(discriminant)) / (2 * a);
+        *answer1 = (-coefs->b - sqrt(discriminant)) / (2 * coefs->a);
+        *answer2 = (-coefs->b + sqrt(discriminant)) / (2 * coefs->a);
         return TWO_SOLUTIONS;
     }
 }
 
-CountSolutions calculate(const double a, const double b, const double c, double* const answer1,
-                         double* const answer2) {
-    if (abs(a) < EPS) {
-        return linear_calculate(b, c, answer1);
+CountSolutions calculate(const Coefs* const coefs, double* const answer1, double* const answer2) {
+    if (abs(coefs->a) < EPS) {
+        return linear_calculate(coefs, answer1);
     } else {
-        return quadratic_calculate(a, b, c, answer1, answer2);
+        return quadratic_calculate(coefs, answer1, answer2);
     }
 }
 
