@@ -11,38 +11,31 @@ enum CountSolutions {
     NOT_REAL_SOLUTIONS
 };
 
-
 void input(double* const a, double* const b, double* const c);
 
-void linear_calculate(const double b, const double c, double* const answer1,
-                      CountSolutions* const count_solutions);
-void quadratic_calculate(const double a, const double b, const double c, double* const answer1,
-                         double* const answer2, CountSolutions* const count_solutions);
-void calculate(const double a, const double b, const double c, double* const answer1,
-               double* const answer2, CountSolutions* const count_solutions);
+CountSolutions linear_calculate(const double b, const double c, double* const answer1);
+
+CountSolutions quadratic_calculate(const double a, const double b, const double c,
+                                   double* const answer1, double* const answer2);
+
+CountSolutions calculate(const double a, const double b, const double c, double* const answer1,
+                         double* const answer2);
 
 double fix_double_zero(double num);
+
 void print(const double answer1, const double answer2, const CountSolutions count_solutions);
 
 int main() {
     double a = 0, b = 0, c = 0;
     input(&a, &b, &c);
 
-    double answer1 = 0, answer2 = 0;
-    CountSolutions count_solutions = ZERO_SOLUTIONS;
-
-    calculate(a, b, c, &answer1, &answer2, &count_solutions);
+    double answer1 = 0;
+    double answer2 = 0;
+    CountSolutions count_solutions = calculate(a, b, c, &answer1, &answer2);
 
     print(answer1, answer2, count_solutions);
 
     return 0;
-}
-
-double fix_double_zero(double num) {
-    if (abs(num) < EPS) {
-        return 0;
-    }
-    return num;
 }
 
 void input(double* const a, double* const b, double* const c) {
@@ -54,42 +47,47 @@ void input(double* const a, double* const b, double* const c) {
     scanf("%lf", c);
 }
 
-void linear_calculate(const double b, const double c, double* const answer1,
-                      CountSolutions* const count_solutions) {
+CountSolutions linear_calculate(const double b, const double c, double* const answer1) {
     if (abs(b) < EPS) {
         if (abs(c) < EPS) {
-            *count_solutions = INF_SOLUTIONS;
-        } else {
-            *count_solutions = ZERO_SOLUTIONS;
+            return INF_SOLUTIONS;
         }
+        return ZERO_SOLUTIONS;
     } else {
-        *count_solutions = ONE_SOLUTIONS;
         *answer1 = -c / b;
+        return ONE_SOLUTIONS;
     }
 }
 
-void quadratic_calculate(const double a, const double b, const double c, double* const answer1,
-                         double* const answer2, CountSolutions* const count_solutions) {
+CountSolutions quadratic_calculate(const double a, const double b, const double c,
+                                   double* const answer1, double* const answer2) {
     double discriminant = b * b - 4 * a * c;
     if (discriminant < 0) {
-        *count_solutions = NOT_REAL_SOLUTIONS;
+        return NOT_REAL_SOLUTIONS;
     } else if (abs(discriminant) < EPS) {
-        *count_solutions = ONE_SOLUTIONS;
+        return ONE_SOLUTIONS;
         *answer1 = -b / (2 * a);
     } else {
-        *count_solutions = TWO_SOLUTIONS;
         *answer1 = (-b - sqrt(discriminant)) / (2 * a);
         *answer2 = (-b + sqrt(discriminant)) / (2 * a);
+        return TWO_SOLUTIONS;
     }
 }
 
-void calculate(const double a, const double b, const double c, double* const answer1,
-               double* const answer2, CountSolutions* const count_solutions) {
+CountSolutions calculate(const double a, const double b, const double c, double* const answer1,
+                         double* const answer2) {
     if (abs(a) < EPS) {
-        linear_calculate(b, c, answer1, count_solutions);
+        return linear_calculate(b, c, answer1);
     } else {
-        quadratic_calculate(a, b, c, answer1, answer2, count_solutions);
+        return quadratic_calculate(a, b, c, answer1, answer2);
     }
+}
+
+double fix_double_zero(double num) {
+    if (abs(num) < EPS) {
+        return 0;
+    }
+    return num;
 }
 
 void print(const double answer1, const double answer2, const CountSolutions count_solutions) {
