@@ -17,28 +17,31 @@ struct Coefs {
     double c;
 };
 
+struct Answer {
+    double root1;
+    double root2;
+    CountSolutions count_solutions;
+};
 void input(Coefs* coefs);
 
-CountSolutions linear_calculate(const Coefs* const coefs, double* const answer1);
+void linear_calculate(const Coefs* const coefs, Answer* const answer);
 
-CountSolutions quadratic_calculate(const Coefs* const coefs, double* const answer1,
-                                   double* const answer2);
+void quadratic_calculate(const Coefs* const coefs, Answer* const answer);
 
-CountSolutions calculate(const Coefs* const coefs, double* const answer1, double* const answer2);
+void calculate(const Coefs* const coefs, Answer* const answer);
 
 double fix_double_zero(double num);
 
-void print(const double answer1, const double answer2, const CountSolutions count_solutions);
+void print(const Answer* const answer);
 
 int main() {
     Coefs coefs = {0, 0, 0};
     input(&coefs);
 
-    double answer1 = 0;
-    double answer2 = 0;
-    CountSolutions count_solutions = calculate(&coefs, &answer1, &answer2);
+    Answer answer = {0, 0, ZERO_SOLUTIONS};
+    calculate(&coefs, &answer);
 
-    print(answer1, answer2, count_solutions);
+    print(&answer);
 
     return 0;
 }
@@ -52,38 +55,38 @@ void input(Coefs* coefs) {
     scanf("%lf", &coefs->c);
 }
 
-CountSolutions linear_calculate(const Coefs* const coefs, double* const answer1) {
+void linear_calculate(const Coefs* const coefs, Answer* const answer) {
     if (abs(coefs->b) < EPS) {
         if (abs(coefs->c) < EPS) {
-            return INF_SOLUTIONS;
+            answer->count_solutions = INF_SOLUTIONS;
+        } else {
+            answer->count_solutions = ZERO_SOLUTIONS;
         }
-        return ZERO_SOLUTIONS;
     } else {
-        *answer1 = -coefs->c / coefs->b;
-        return ONE_SOLUTIONS;
+        answer->root1 = -coefs->c / coefs->b;
+        answer->count_solutions = ONE_SOLUTIONS;
     }
 }
 
-CountSolutions quadratic_calculate(const Coefs* const coefs, double* const answer1,
-                                   double* const answer2) {
+void quadratic_calculate(const Coefs* const coefs, Answer* const answer) {
     double discriminant = coefs->b * coefs->b - 4 * coefs->a * coefs->c;
     if (discriminant < 0) {
-        return NOT_REAL_SOLUTIONS;
+        answer->count_solutions = NOT_REAL_SOLUTIONS;
     } else if (abs(discriminant) < EPS) {
-        return ONE_SOLUTIONS;
-        *answer1 = -coefs->b / (2 * coefs->a);
+        answer->count_solutions = ONE_SOLUTIONS;
+        answer->root1 = -coefs->b / (2 * coefs->a);
     } else {
-        *answer1 = (-coefs->b - sqrt(discriminant)) / (2 * coefs->a);
-        *answer2 = (-coefs->b + sqrt(discriminant)) / (2 * coefs->a);
-        return TWO_SOLUTIONS;
+        answer->root1 = (-coefs->b - sqrt(discriminant)) / (2 * coefs->a);
+        answer->root2 = (-coefs->b + sqrt(discriminant)) / (2 * coefs->a);
+        answer->count_solutions = TWO_SOLUTIONS;
     }
 }
 
-CountSolutions calculate(const Coefs* const coefs, double* const answer1, double* const answer2) {
+void calculate(const Coefs* const coefs, Answer* const answer) {
     if (abs(coefs->a) < EPS) {
-        return linear_calculate(coefs, answer1);
+        linear_calculate(coefs, answer);
     } else {
-        return quadratic_calculate(coefs, answer1, answer2);
+        quadratic_calculate(coefs, answer);
     }
 }
 
@@ -94,18 +97,18 @@ double fix_double_zero(double num) {
     return num;
 }
 
-void print(const double answer1, const double answer2, const CountSolutions count_solutions) {
+void print(const Answer* const answer) {
     printf("Answer: ");
-    switch (count_solutions) {
+    switch (answer->count_solutions) {
         case ZERO_SOLUTIONS:
             printf("zero solutions\n");
             break;
         case ONE_SOLUTIONS: {
-            printf("x = %g\n", fix_double_zero(answer1));
+            printf("x = %g\n", fix_double_zero(answer->root1));
             break;
         }
         case TWO_SOLUTIONS: {
-            printf("x = %g, %g\n", fix_double_zero(answer1), fix_double_zero(answer2));
+            printf("x = %g, %g\n", fix_double_zero(answer->root1), fix_double_zero(answer->root2));
             break;
         }
         case INF_SOLUTIONS: {
