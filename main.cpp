@@ -2,35 +2,34 @@
 #include "stdio.h"
 
 #define EPS 10e-7
-#define NEPS -10e-7
 
-enum OutputState {
+enum CountSolutions {
     ZERO_SOLUTIONS,
     ONE_SOLUTIONS,
     TWO_SOLUTIONS,
     INF_SOLUTIONS,
     NOT_REAL_SOLUTIONS
 };
-void input(double* a, double* b, double* c);
-void calculate(double a, double b, double c, double* answer1, double* answer2,
-               enum OutputState* state);
-void print(double answer1, double answer2, enum OutputState state);
+void input(double* const a, double* const b, double* const c);
+void calculate(const double a, const double b, const double c, double* const answer1,
+               double* const answer2, CountSolutions* const count_solutions);
+void print(const double answer1, const double answer2, const CountSolutions count_solutions);
 
 int main() {
-    double a, b, c;
+    double a = 0, b = 0, c = 0;
     input(&a, &b, &c);
 
-    double answer1, answer2;
-    enum OutputState state;
+    double answer1 = 0, answer2 = 0;
+    CountSolutions count_solutions = ZERO_SOLUTIONS;
 
-    calculate(a, b, c, &answer1, &answer2, &state);
+    calculate(a, b, c, &answer1, &answer2, &count_solutions);
 
-    print(answer1, answer2, state);
+    print(answer1, answer2, count_solutions);
 
     return 0;
 }
 
-void input(double* a, double* b, double* c) {
+void input(double* const a, double* const b, double* const c) {
     printf("Input first coef: ");
     scanf("%lf", a);
     printf("Input second coef: ");
@@ -39,33 +38,30 @@ void input(double* a, double* b, double* c) {
     scanf("%lf", c);
 }
 
-void calculate(double a, double b, double c, double* answer1, double* answer2,
-               enum OutputState* state) {
+void calculate(const double a, const double b, const double c, double* const answer1,
+               double* const answer2, CountSolutions* const count_solutions) {
     if (abs(a) < EPS) {
         if (abs(b) < EPS) {
             if (abs(c) < EPS) {
-                *state = INF_SOLUTIONS;
+                *count_solutions = INF_SOLUTIONS;
             } else {
-                *state = ZERO_SOLUTIONS;
+                *count_solutions = ZERO_SOLUTIONS;
             }
         } else {
-            *state = ONE_SOLUTIONS;
+            *count_solutions = ONE_SOLUTIONS;
             *answer1 = -c / b;
         }
     } else {
         double discriminant = b * b - 4 * a * c;
         if (discriminant < 0) {
-            *state = NOT_REAL_SOLUTIONS;
+            *count_solutions = NOT_REAL_SOLUTIONS;
         } else if (abs(discriminant) < EPS) {
-            *state = ONE_SOLUTIONS;
+            *count_solutions = ONE_SOLUTIONS;
             *answer1 = -b / (2 * a);
         } else {
-            *state = TWO_SOLUTIONS;
-            double numerator1 = -b - sqrt(discriminant), numerator2 = -b + sqrt(discriminant);
-            double denominator = 2 * a;
-
-            *answer1 = numerator1 / denominator;
-            *answer2 = numerator2 / denominator;
+            *count_solutions = TWO_SOLUTIONS;
+            *answer1 = (-b - sqrt(discriminant)) / (2 * a);
+            *answer2 = (-b + sqrt(discriminant)) / (2 * a);
         }
     }
 
@@ -77,9 +73,9 @@ void calculate(double a, double b, double c, double* answer1, double* answer2,
     }
 }
 
-void print(double answer1, double answer2, enum OutputState state) {
+void print(const double answer1, const double answer2, const CountSolutions count_solutions) {
     printf("Answer: ");
-    switch (state) {
+    switch (count_solutions) {
         case ZERO_SOLUTIONS:
             printf("zero solutions\n");
             break;
