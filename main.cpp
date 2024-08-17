@@ -22,6 +22,7 @@ struct Answer {
     double root2;
     CountSolutions count_solutions;
 };
+
 void input(Coefs* coefs);
 
 void linear_calculate(const Coefs* const coefs, Answer* const answer);
