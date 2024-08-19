@@ -1,5 +1,8 @@
+#include "assert.h"
+#include "ctype.h"
 #include "math.h"
 #include "stdio.h"
+#include "string.h"
 
 #define EPS 10e-7
 
@@ -22,17 +25,14 @@ struct Answer {
     double root2;
     CountSolutions count_solutions;
 };
-
+bool is_num(const char* const string);
 void input(Coefs* coefs);
 
 void linear_calculate(const Coefs* const coefs, Answer* const answer);
-
 void quadratic_calculate(const Coefs* const coefs, Answer* const answer);
-
 void calculate(const Coefs* const coefs, Answer* const answer);
 
 double fix_double_zero(double num);
-
 void print(const Answer* const answer);
 
 int main() {
@@ -47,13 +47,45 @@ int main() {
     return 0;
 }
 
+bool is_num(const char* const string) {
+    bool is_already_dot = false;
+    size_t size = strlen(string);
+    if (*string == '+' || *string == '-' || isdigit(*string)) {
+        for (size_t i = 1; i < size; ++i) {
+            if (!isdigit(string[i])) {
+                if (string[i] == '.') {
+                    if (is_already_dot) {
+                        return false;
+                    }
+                    is_already_dot = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    } else {
+        return false;
+    }
+    return true;
+}
+
 void input(Coefs* coefs) {
+    char buffer[100];
+
     printf("Input first coef: ");
-    scanf("%lf", &coefs->a);
+    scanf("%s", buffer);
+    assert(is_num(buffer) && "incorrect input\n");
+    coefs->a = atof(buffer);
+
     printf("Input second coef: ");
-    scanf("%lf", &coefs->b);
+    scanf("%s", buffer);
+    assert(is_num(buffer) && "incorrect input\n");
+    coefs->b = atof(buffer);
+
     printf("Input third coef: ");
-    scanf("%lf", &coefs->c);
+    scanf("%s", buffer);
+    assert(is_num(buffer) && "incorrect input\n");
+    coefs->c = atof(buffer);
 }
 
 void linear_calculate(const Coefs* const coefs, Answer* const answer) {
@@ -121,7 +153,7 @@ void print(const Answer* const answer) {
             break;
         }
         default: {
-            fprintf(stderr, "Unknown error\n");
+            assert("Unknown error\n");
             break;
         }
     }
