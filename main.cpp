@@ -4,22 +4,22 @@
 #include <stdio.h>
 #include <string.h>
 
-#define EPS 1e-7
+constexpr double EPS = 1e-7;
 
 enum InputCode
 {
-    INPUT_FAILURE = 0,
-    INPUT_INCORRECT = 1,
-    INPUT_SUCCESS = 2
+    INPUT_SUCCESS   = 0,
+    INPUT_FAILURE   = 1,
+    INPUT_INCORRECT = 2
 };
 
 enum CountSolutions
 {
-    ZERO_SOLUTIONS,
-    ONE_SOLUTIONS,
-    TWO_SOLUTIONS,
-    INF_SOLUTIONS,
-    NOT_REAL_SOLUTIONS
+    ZERO_SOLUTIONS = 0,
+    ONE_SOLUTIONS  = 1,
+    TWO_SOLUTIONS  = 2,
+    INF_SOLUTIONS  = 808,
+    NOT_REAL_SOLUTIONS = 2286661337
 };
 
 struct Coefs
@@ -58,7 +58,7 @@ int main()
         fprintf(stderr, "INPUT_FAILURE\t ferror(stdin) = %d", ferror(stdin));
         return 0;
     }
-    
+
     const Answer answer = calculate(coefs);
     print(answer);
 
@@ -68,7 +68,7 @@ int main()
 bool is_zero(double num) { return abs(num) < EPS; }
 
 double fix_double_zero(double num) {
-    if (is_zero(abs(num))) 
+    if (is_zero(num)) 
     {
         return 0;
     }
@@ -89,8 +89,8 @@ InputCode scan_double(double* const num)
     int correct_scan_count = scanf("%lg", num);
     int next_symbol = getchar();
 
-    return ferror(stdin) == 0
-        ? ((correct_scan_count != 0 && next_symbol == (int)'\n')
+    return (ferror(stdin) == 0 && correct_scan_count != -1)
+        ? ((correct_scan_count == 1 && next_symbol == (int)'\n')
             ? INPUT_SUCCESS
             : INPUT_INCORRECT)
         : INPUT_FAILURE;
@@ -117,13 +117,20 @@ InputCode input(Coefs* const coefs) {
 
     InputCode input_code = INPUT_FAILURE;
 
-    input_code = input_coef(&coefs->a, "Input first coef: ");
-    if (input_code == INPUT_FAILURE) return input_code;
+    constexpr size_t count_coefs = 3;
+    double* coefs_array[3] = {&coefs->a, &coefs->b, &coefs->c};
+    const char* const messages_array[3] = 
+    {
+        "Input first coef: ",
+        "Input second coef: ",
+        "Input third coef: "
+    };
 
-    input_code = input_coef(&coefs->b, "Input second coef: ");
-    if (input_code == INPUT_FAILURE) return input_code;
-
-    input_code = input_coef(&coefs->c, "Input third coef: ");
+    for (size_t i = 0; i < count_coefs; ++i)
+    {
+        input_code = input_coef(coefs_array[i], messages_array[i]);
+        if (input_code == INPUT_FAILURE) return input_code;
+    }
 
     return input_code;
 }
@@ -132,16 +139,9 @@ InputCode input(Coefs* const coefs) {
 Answer linear_calculate(const Coefs coefs)
 {
     Answer answer = {0, 0, INF_SOLUTIONS};
-    if (is_zero(abs(coefs.b))) 
+    if (is_zero(coefs.b)) 
     {
-        if (is_zero(abs(coefs.c))) 
-        {
-            answer.count_solutions = INF_SOLUTIONS;
-        }
-        else
-        {
-            answer.count_solutions = ZERO_SOLUTIONS;
-        }
+        answer.count_solutions = is_zero(coefs.c) ? INF_SOLUTIONS : ZERO_SOLUTIONS;
     }
     else
     {
@@ -159,7 +159,7 @@ Answer quadratic_calculate(const Coefs coefs)
     {
         answer.count_solutions = NOT_REAL_SOLUTIONS;
     }
-    else if (is_zero(abs(discriminant))) 
+    else if (is_zero(discriminant)) 
     {
         answer.count_solutions = ONE_SOLUTIONS;
         answer.root1 = -coefs.b / (2 * coefs.a);
@@ -175,14 +175,7 @@ Answer quadratic_calculate(const Coefs coefs)
 
 Answer calculate(const Coefs coefs)
 {
-    if (is_zero(abs(coefs.a))) 
-    {
-        return linear_calculate(coefs);
-    }
-    else 
-    {
-        return quadratic_calculate(coefs);
-    }
+    return is_zero(coefs.a) ? linear_calculate(coefs) : quadratic_calculate(coefs);
 }
 
 void print(const Answer answer)
