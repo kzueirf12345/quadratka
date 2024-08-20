@@ -6,10 +6,11 @@
 
 #define EPS 1e-7
 
-enum ReturnCode
+enum InputCode
 {
-    RETURN_FAILURE,
-    RETURN_SUCCESS
+    INPUT_FAILURE = 0,
+    INPUT_INCORRECT = 1,
+    INPUT_SUCCESS = 2
 };
 
 enum CountSolutions
@@ -38,11 +39,10 @@ struct Answer
 bool is_zero(double num);
 double fix_double_zero(double num);
 
-void flush(void);
-
-ReturnCode scan_double(double* const num);
-void input_coef(double* const num, const char* const message);
-void input(Coefs* const coefs);
+InputCode flush();
+InputCode scan_double(double* const num);
+InputCode input_coef(double* const num, const char* const message);
+InputCode input(Coefs* const coefs);
 
 Answer linear_calculate(const Coefs coefs);
 Answer quadratic_calculate(const Coefs coefs);
@@ -53,8 +53,12 @@ void print(const Answer answer);
 int main()
 {
     Coefs coefs = {0, 0, 0};
-    input(&coefs);
-
+    if (input(&coefs) == INPUT_FAILURE)
+    {
+        fprintf(stderr, "INPUT_FAILURE\t ferror(stdin) = %d", ferror(stdin));
+        return 0;
+    }
+    
     const Answer answer = calculate(coefs);
     print(answer);
 
@@ -72,34 +76,56 @@ double fix_double_zero(double num) {
 }
 
 
-void flush(void)
+InputCode flush()
 {
-    for (int symbol = getchar(); symbol != '\n' && symbol != EOF; symbol = getchar());
+    for (int symbol = getchar(); symbol != '\n' && symbol != EOF && ferror(stdin) == 0; symbol = getchar());
+    return ferror(stdin) ? INPUT_FAILURE : INPUT_SUCCESS;
 }
 
-ReturnCode scan_double(double* const num) 
+InputCode scan_double(double* const num) 
 {
+    assert(num && "num is nullptr");
+
     int correct_scan_count = scanf("%lg", num);
     int next_symbol = getchar();
 
-    return (ReturnCode)(correct_scan_count != 0 && next_symbol == (int)'\n');
+    return ferror(stdin) == 0
+        ? ((correct_scan_count != 0 && next_symbol == (int)'\n')
+            ? INPUT_SUCCESS
+            : INPUT_INCORRECT)
+        : INPUT_FAILURE;
 }
 
-void input_coef(double* const num, const char* const message)
+InputCode input_coef(double* const num, const char* const message)
 {
+    assert(num && "num is nullptr");
+    assert(message && "num is nullptr");
+
+    InputCode input_code = INPUT_FAILURE;
     printf("%s", message);
-    while (scan_double(num) == RETURN_FAILURE)
+    while ((input_code = scan_double(num)) == INPUT_INCORRECT)
     {
         printf("Incorrect input, try again!\n");
         printf("%s", message);
         flush();
     }
+    return input_code;
 }
 
-void input(Coefs* const coefs) {
-    input_coef(&coefs->a, "Input first coef: ");
-    input_coef(&coefs->b, "Input second coef: ");
-    input_coef(&coefs->c, "Input third coef: ");
+InputCode input(Coefs* const coefs) {
+    assert(coefs && "coefs is nullptr");
+
+    InputCode input_code = INPUT_FAILURE;
+
+    input_code = input_coef(&coefs->a, "Input first coef: ");
+    if (input_code == INPUT_FAILURE) return input_code;
+
+    input_code = input_coef(&coefs->b, "Input second coef: ");
+    if (input_code == INPUT_FAILURE) return input_code;
+
+    input_code = input_coef(&coefs->c, "Input third coef: ");
+
+    return input_code;
 }
 
 
