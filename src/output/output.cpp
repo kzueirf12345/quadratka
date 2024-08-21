@@ -1,5 +1,7 @@
 #include "output.h"
 
+#include "../utils/console.h"
+
 OutputCode print(FILE* stream, const Answer answer)
 {
     int count_output = 0;

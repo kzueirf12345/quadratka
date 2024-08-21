@@ -8,12 +8,26 @@
 #include "src/calculate/calculate.h"
 #include "src/output/output.h"
 #include "src/test/test.h"
+#include "src/utils/console.h"
 
 #define TEST
+
+int run_test();
+int run_user();
 
 int main()
 {
 #ifdef TEST
+    return run_test();
+#else
+    return run_user();
+#endif
+
+    return 0;
+}
+
+int run_test()
+{
     FILE* test_log = fopen("../test.log", "w");
     if (global_testing(test_log) == TEST_FAILURE)
     {
@@ -23,7 +37,10 @@ int main()
     }
     fclose(test_log);
     fprintf(stderr, GREEN_TEXT "Testing complete!\n" NORMAL_TEXT);
-#else
+    return 0;
+}
+
+int run_user() { 
     Coefs coefs = {0, 0, 0};
     if (input(&coefs) == INPUT_FAILURE)
     {
@@ -39,7 +56,6 @@ int main()
         fprintf(stderr, RED_TEXT "OUTPUT_FAILURE\t ferror(stdout) = %d" NORMAL_TEXT, ferror(stdout));
         return -1;
     }
-#endif
 
     return 0;
 }

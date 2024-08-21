@@ -1,5 +1,7 @@
 #include "test.h"
 
+#include "../utils/console.h"
+
 bool is_equal_answer(const Answer answer1, const Answer answer2)
 {
     if (answer1.count_solutions != answer2.count_solutions) return false;
