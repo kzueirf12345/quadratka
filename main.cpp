@@ -28,7 +28,7 @@ int main()
 
 int run_test()
 {
-    FILE* test_log = fopen("../test.log", "w");
+    FILE* test_log = fopen("test.log", "w");
     if (global_testing(test_log) == TEST_FAILURE)
     {
         fprintf(stderr, RED_TEXT "TEST_FAILURE\n" NORMAL_TEXT);
