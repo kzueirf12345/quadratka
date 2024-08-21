@@ -1,5 +1,7 @@
 #include "calculate.h"
 
+#include "../utils/utils.h"
+
 Answer linear_calculate(const Coefs coefs)
 {
     Answer answer = {0, 0, INF_SOLUTIONS};
@@ -18,7 +20,7 @@ Answer linear_calculate(const Coefs coefs)
 Answer quadratic_calculate(const Coefs coefs)
 {
     Answer answer = {0, 0, INF_SOLUTIONS};
-    double discriminant = coefs.b * coefs.b - 4 * coefs.a * coefs.c;
+    const double discriminant = coefs.b * coefs.b - 4 * coefs.a * coefs.c;
     if (discriminant < 0) 
     {
         answer.count_solutions = NOT_REAL_SOLUTIONS;

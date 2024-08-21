@@ -1,9 +1,11 @@
-#pragma once
-
-#include "../structs/structs.h"
+#ifndef SRC_INPUT_H
+#define SRC_INPUT_H
 
 #include <stdio.h>
 #include <assert.h>
+
+#include "../structs/structs.h"
+
 
 enum InputCode
 {
@@ -16,3 +18,5 @@ InputCode flush();
 InputCode scan_double(double* const num);
 InputCode input_coef(double* const num, const char* const message);
 InputCode input(Coefs* const coefs);
+
+#endif /* SRC_INPUT_H */

@@ -2,7 +2,10 @@
 
 InputCode flush()
 {
-    for (int symbol = getchar(); symbol != '\n' && symbol != EOF && ferror(stdin) == 0; symbol = getchar());
+    for (int symbol = getchar();
+         symbol != '\n' && symbol != EOF && ferror(stdin) == 0;
+         symbol = getchar()) {}
+
     return ferror(stdin) ? INPUT_FAILURE : INPUT_SUCCESS;
 }
 
@@ -13,7 +16,7 @@ InputCode scan_double(double* const num)
     int correct_scan_count = scanf("%lg", num);
     int next_symbol = getchar();
 
-    return (ferror(stdin) == 0 && correct_scan_count != -1)
+    return (ferror(stdin) == 0 && correct_scan_count != EOF)
         ? ((correct_scan_count == 1 && next_symbol == (int)'\n')
             ? INPUT_SUCCESS
             : INPUT_INCORRECT)
@@ -44,16 +47,17 @@ InputCode input(Coefs* const coefs) {
     constexpr size_t count_coefs = 3;
     double* coefs_array[3] = {&coefs->a, &coefs->b, &coefs->c};
     const char* const messages_array[3] = 
-    {
-        "Input first coef: ",
-        "Input second coef: ",
-        "Input third coef: "
-    };
+        {
+            "Input first coef: ",
+            "Input second coef: ",
+            "Input third coef: "
+        };
 
     for (size_t i = 0; i < count_coefs; ++i)
     {
         input_code = input_coef(coefs_array[i], messages_array[i]);
-        if (input_code == INPUT_FAILURE) return input_code;
+        if (input_code == INPUT_FAILURE)
+            return input_code;
     }
 
     return input_code;

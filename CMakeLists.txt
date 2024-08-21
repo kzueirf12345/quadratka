@@ -8,8 +8,7 @@ set (CMAKE_CXX_STANDARD 17)
 add_executable(quadratka 
     main.cpp
     
-    classes/input/input.cpp
-    classes/calculate/calculate.cpp
-    classes/output/output.cpp
-    classes/structs/structs.cpp
+    src/input/input.cpp
+    src/calculate/calculate.cpp
+    src/output/output.cpp
 )

@@ -1,8 +1,7 @@
-#pragma once
+#ifndef SRC_STRUCTS_H
+#define SRC_STRUCTS_H
 
 #include <math.h>
-
-constexpr double EPS = 1e-7;
 
 enum CountSolutions
 {
@@ -27,5 +26,4 @@ struct Answer
     CountSolutions count_solutions;
 };
 
-bool is_zero(double num);
-double fix_double_zero(double num);
+#endif /* SRC_STRCUTS_H */
