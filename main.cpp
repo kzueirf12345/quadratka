@@ -9,22 +9,25 @@
 #include "src/output/output.h"
 #include "src/test/test.h"
 
-// #define TEST
+#define TEST
 
 int main()
 {
 #ifdef TEST
-    if (global_testing() == TEST_FAILURE)
+    FILE* test_log = fopen("../test.log", "w");
+    if (global_testing(test_log) == TEST_FAILURE)
     {
-        fprintf(stderr, "TEST_FAILURE\n");
+        fprintf(stderr, RED_TEXT "TEST_FAILURE\n" NORMAL_TEXT);
+        fclose(test_log);
         return -1;
     }
-    fprintf(stderr, "Testing complete!\n");
+    fclose(test_log);
+    fprintf(stderr, GREEN_TEXT "Testing complete!\n" NORMAL_TEXT);
 #else
     Coefs coefs = {0, 0, 0};
     if (input(&coefs) == INPUT_FAILURE)
     {
-        fprintf(stderr, "INPUT_FAILURE\t ferror(stdin) = %d", ferror(stdin));
+        fprintf(stderr, RED_TEXT "INPUT_FAILURE\t ferror(stdin) = %d" NORMAL_TEXT, ferror(stdin));
         return -1;
     }
 
@@ -33,7 +36,7 @@ int main()
     printf("Answer: ");
     if (print(stdout, answer) == OUTPUT_FAILURE)
     {
-        fprintf(stderr, "OUTPUT_FAILURE\t ferror(stdout) = %d", ferror(stdout));
+        fprintf(stderr, RED_TEXT "OUTPUT_FAILURE\t ferror(stdout) = %d" NORMAL_TEXT, ferror(stdout));
         return -1;
     }
 #endif

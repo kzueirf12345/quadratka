@@ -22,14 +22,28 @@ OutputCode print_incorrect_test_case(FILE* stream,
 
     fprintf(stream, "======================\n");
 
-    if (fprintf(stream, "Test_case №%lu is INcorrect!\n"
-                        "Coefs: %g, %g, %g",
-                        num_test_case,
-                        test_case.coefs.a, test_case.coefs.b, test_case.coefs.c
-                ) != 4)
+    char first_message[100] = {};
+    if (stream == stdout)
     {
-        return OUTPUT_FAILURE;
+        if (sprintf(first_message, 
+                    BOLD_TEXT "Test_case №%lu is " 
+                    RED_TEXT "INcorrect" BLACK_TEXT "!" NORMAL_TEXT,
+                    num_test_case) <= 0)
+            return OUTPUT_FAILURE;
     }
+    else
+    {
+        if (sprintf(first_message, "Test_case №%lu is INcorrect!", num_test_case) <= 0)
+            return OUTPUT_FAILURE;
+    }
+
+    if (fprintf(stream, 
+                "%s\n"
+                "Coefs: %g, %g, %g\n",
+                first_message,
+                test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
+        return OUTPUT_FAILURE;
+    
 
     fprintf(stream, "Correct answer: ");
     if (print(stream, test_case.answer) == OUTPUT_FAILURE) 
@@ -51,14 +65,27 @@ OutputCode print_correct_test_case(FILE* stream,
 
     fprintf(stream, "======================\n");
 
-    if (fprintf(stream, "Test_case №%lu is correct!\n"
-                        "Coefs: %g, %g, %g\n",
-                        num_test_case,
-                        test_case.coefs.a, test_case.coefs.b, test_case.coefs.c
-                ) <= 0)
+    char first_message[100] = {};
+    if (stream == stdout)
     {
-        return OUTPUT_FAILURE;
+        if (sprintf(first_message, 
+                    BOLD_TEXT "Test_case №%lu is " 
+                    GREEN_TEXT "correct" BLACK_TEXT "!" NORMAL_TEXT,
+                    num_test_case) <= 0)
+            return OUTPUT_FAILURE;
     }
+    else
+    {
+        if (sprintf(first_message, "Test_case №%lu is correct!", num_test_case) <= 0)
+            return OUTPUT_FAILURE;
+    }
+
+    if (fprintf(stream, 
+                "%s\n"
+                "Coefs: %g, %g, %g\n",
+                first_message,
+                test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
+        return OUTPUT_FAILURE;
 
     fprintf(stream, "Answer: ");
     if (print(stream, test_case.answer) == OUTPUT_FAILURE) 
@@ -87,16 +114,14 @@ TestCode testing(FILE* stream, const size_t num_test_case, const TestCase test_c
     return TEST_SUCCESS;
 }
 
-TestCode global_testing(const char* const filename)
+TestCode global_testing(FILE* test_log)
 { 
-    FILE* test_log = fopen(filename, "w");
-
     assert(test_log && "test log is nullptr");
 
     static constexpr size_t TEST_CASES_SIZE = 8;
     static const TestCase test_cases[TEST_CASES_SIZE] =
         {
-            (TestCase){(Coefs){0, 0, 0},(Answer){NAN, NAN, INF_SOLUTIONS}},
+            (TestCase){(Coefs){0, 0, 1},(Answer){NAN, NAN, INF_SOLUTIONS}},
             (TestCase){(Coefs){0, 0, 12},(Answer){NAN, NAN, ZERO_SOLUTIONS}},
             (TestCase){(Coefs){0, 7, 0},(Answer){0, NAN, ONE_SOLUTIONS}},
             (TestCase){(Coefs){0, 7, 12},(Answer){-12*1./7, NAN, ONE_SOLUTIONS}},
@@ -112,6 +137,5 @@ TestCode global_testing(const char* const filename)
             return TEST_FAILURE;
     }
 
-    fclose(test_log);
     return TEST_SUCCESS;
 }

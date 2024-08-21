@@ -1,7 +1,8 @@
 ======================
-Test_case №0 is correct!
-Coefs: 0, 0, 0
-Answer: x - any number
+Test_case №0 is INcorrect!
+Coefs: 0, 0, 1
+Correct answer: x - any number
+Programm answer: zero solutions
 ======================
 ======================
 Test_case №1 is correct!

@@ -28,7 +28,7 @@ OutputCode print_correct_test_case(FILE* stream,
 bool is_equal_answer(const Answer answer1, const Answer answer2);
 TestCode testing(FILE* stream, const size_t num_test_case, const TestCase test_case);
 
-TestCode global_testing(const char* const filename = "../test.log");
+TestCode global_testing(FILE* test_log);
 
 
 #endif /* SRC_TEST_H */
