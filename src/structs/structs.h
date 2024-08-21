@@ -26,4 +26,4 @@ struct Answer
     CountSolutions count_solutions;
 };
 
-#endif /* SRC_STRCUTS_H */
+#endif /* SRC_STRUCTS_H */

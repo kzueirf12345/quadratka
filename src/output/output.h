@@ -7,6 +7,12 @@
 #include "../utils/utils.h"
 #include "../structs/structs.h"
 
+enum OutputCode
+{
+    OUTPUT_SUCCESS   = 0,
+    OUTPUT_FAILURE   = 1,
+};
+
 inline double fix_double_zero(double num) {
     if (is_zero(num)) 
     {
@@ -15,6 +21,6 @@ inline double fix_double_zero(double num) {
     return num;
 }
 
-void print(const Answer answer);
+OutputCode print(FILE* stream, const Answer answer);
 
 #endif /* SRC_OUTPUT_H */

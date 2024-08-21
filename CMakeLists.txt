@@ -11,4 +11,5 @@ add_executable(quadratka
     src/input/input.cpp
     src/calculate/calculate.cpp
     src/output/output.cpp
+    src/test/test.cpp
 )
