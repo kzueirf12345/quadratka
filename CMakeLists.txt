@@ -5,4 +5,10 @@ set (CMAKE_CXX_COMPILER "/usr/bin/g++")
 set (CMAKE_CXX_STANDARD 17)
 
 
-add_executable(quadratka main.cpp)
+add_executable(quadratka 
+    main.cpp
+    
+    src/input/input.cpp
+    src/calculate/calculate.cpp
+    src/output/output.cpp
+)
