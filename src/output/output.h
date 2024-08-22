@@ -7,6 +7,8 @@
 #include "../utils/utils.h"
 #include "../structs/structs.h"
 
+//TODO: log_out in run
+
 enum OutputCode
 {
     OUTPUT_SUCCESS   = 0,

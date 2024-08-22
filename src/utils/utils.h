@@ -3,6 +3,9 @@
 
 #include <math.h>
 
+#define KWORD_TO_STDOUT "__CONCOLE__"
+constexpr const char *const DEFAULT_USER_LOGOUT = "./user.log";
+constexpr const char *const DEFAULT_TEST_LOGOUT = "./test.log";
 
 static constexpr double EPS = 1e-7;
 

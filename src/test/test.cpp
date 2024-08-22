@@ -123,7 +123,7 @@ TestCode global_testing(FILE* test_log)
     static constexpr size_t TEST_CASES_SIZE = 8;
     static const TestCase test_cases[TEST_CASES_SIZE] =
         {
-            (TestCase){(Coefs){0, 0, 1},(Answer){NAN, NAN, INF_SOLUTIONS}},
+            (TestCase){(Coefs){0, 0, 0},(Answer){NAN, NAN, INF_SOLUTIONS}},
             (TestCase){(Coefs){0, 0, 12},(Answer){NAN, NAN, ZERO_SOLUTIONS}},
             (TestCase){(Coefs){0, 7, 0},(Answer){0, NAN, ONE_SOLUTIONS}},
             (TestCase){(Coefs){0, 7, 12},(Answer){-12*1./7, NAN, ONE_SOLUTIONS}},
