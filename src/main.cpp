@@ -4,11 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "src/input/input.h"
-#include "src/calculate/calculate.h"
-#include "src/output/output.h"
-#include "src/test/test.h"
-#include "src/utils/console.h"
+#include "input/input.h"
+#include "calculate/calculate.h"
+#include "output/output.h"
+#include "test/test.h"
+#include "utils/console.h"
 
 #define TEST
 
@@ -28,7 +28,8 @@ int main()
 
 int run_test()
 {
-    FILE* test_log = fopen("test.log", "w");
+    
+    FILE* test_log = fopen("log/test.log", "w");
     if (global_testing(test_log) == TEST_FAILURE)
     {
         fprintf(stderr, RED_TEXT "TEST_FAILURE\n" NORMAL_TEXT);
