@@ -107,7 +107,7 @@ FlagCode fill_Options(Options*const options, const size_t argc,const char * cons
             }
         }
     }
-    return FLAG_FAILURE;
+    return FLAG_SUCCESS;
 }
 
 void command_help(Options*const options)
@@ -120,12 +120,12 @@ void command_help(Options*const options)
     "\n"
     "FLAGS:\n");
 
-    for (size_t i = 0; i < FLAGS_SIZE; ++i)
+    for (size_t i = 1; i < FLAGS_SIZE; ++i)
     {
         fprintf(options->out, "%-30s %s\n", FLAGS[i].small_description, FLAGS[i].description);
     }
 
-    fprintf(options->out, "Without --infinity the program will run once and after the "
+    fprintf(options->out, "\nWithout --infinity the program will run once and after the "
         "solution will terminate, leaving a record in the log\n");
     fprintf(options->out, "Error code:\nFAILURE = %d\nINCORRECT = %d\n\n", 
         (int)FLAG_FAILURE, (int)FLAG_INCORRECT);

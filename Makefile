@@ -27,11 +27,12 @@ start:
 	./quadratka.out
 
 
+
 quadratka.out: $(OBJECTS_REL_PATH)
-	$(COMPILER) -o $@ $^
+	$(COMPILER) $(FLAGS) -o $@ $^
 
 $(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp | $(BUILD_DIRS)
-	$(COMPILER) $< -c -MMD -o $@
+	$(COMPILER) -c -MMD $< -o $@ 
 
 -include $(DEPS_REL_PATH)
 

@@ -21,8 +21,8 @@ struct Options
 enum FlagCode
 {
     FLAG_SUCCESS = 0,
-    FLAG_FAILURE = 1,
     FLAG_INCORRECT = 1,
+    FLAG_FAILURE = 2,
 };
 
 struct Flag
@@ -62,21 +62,21 @@ constexpr Flag FLAGS[FLAGS_SIZE] =
         .description = "After solving next equation, the program starts over again",
         .func = Flag_infinity},
     (Flag){.name = "--log", .small_description = "--log ?[STREAM]",
-        .description = "Changes the file for writing logs."
-        "If file is not found, a new one will be created."
+        .description = "Changes the file for writing logs. "
+        "If file is not found, a new one will be created. "
         "If [STREAM] not specified, than output will be do in ./user.log.",
         .func = Flag_log},
     (Flag){.name = "--file", .small_description = "--file ?[STREAM]", 
-        .description = "Changes the output stream to the file specified by the next parameter."
-        "If file is not found, a new one will be created."
-        "If [STREAM] not specified, than output will be do in console."
+        .description = "Changes the output stream to the file specified by the next parameter. "
+        "If file is not found, a new one will be created. "
+        "If [STREAM] not specified, than output will be do in console. "
         "To use the console as the output stream, enter "
         KWORD_TO_STDOUT
         " in place of the file name", 
         .func = Flag_file},
     (Flag){.name = "--print_log", .small_description = "--print_log ?[STREAM]",
-        .description = "Output contents of logout to the file specified by the next parameter."
-        "If [STREAM] not specified, than output will be do in console."
+        .description = "Output contents of logout to the file specified by the next parameter. "
+        "If [STREAM] not specified, than output will be do in console. "
         "To use the console as the output stream, enter "
         KWORD_TO_STDOUT
         " in place of the file name", 

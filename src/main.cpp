@@ -33,7 +33,7 @@ int main(const int argc,const char* argv[])
     FlagCode fill_Options_code = FLAG_FAILURE;
     if ((fill_Options_code = fill_Options(&options, argc, argv)) != FLAG_SUCCESS)
     {
-        fprintf(stderr, RED_TEXT "INPUT_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+        fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
         return -1;
     }
 
