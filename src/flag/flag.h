@@ -9,13 +9,16 @@
 
 struct Options
 {
-    bool help;
-    bool clean;
-    bool infinity;
-    bool print_log;
-    FILE* out;
+    bool do_help;
+    bool do_clean;
+    bool do_print_log;
+    bool do_infinity;
+
+    const char* logout_name;
     FILE* logout;
-    FILE* log_print;
+
+    FILE* out;
+    FILE* print_log;
 };
 
 enum FlagCode
@@ -33,8 +36,6 @@ struct Flag
     FlagCode (*func)(Options* const options, size_t* const index_argv, 
         const char* const* const argv, const size_t argc);
 };
-
-
 
 
 FlagCode Flag_help(Options* const options, size_t* const index_argv, 
@@ -86,7 +87,9 @@ constexpr Flag FLAGS[FLAGS_SIZE] =
 
 FlagCode fill_Options(Options*const options, const size_t argc,const char * const * const argv);
 
-void command_help(Options*const options); //TODO - not void
+FlagCode command_help(Options*const options);
+FlagCode command_clean(Options*const options);
+FlagCode command_print_log(Options*const options);
 
 
 

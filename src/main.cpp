@@ -26,8 +26,9 @@ int main(const int argc,const char* argv[])
     if (argc == 1)
         return run_use(stdout);
 
-    Options options = {.help = false, .clean = false, .infinity = false, .print_log = false,
-                       .out = stdout, .logout = fopen("./user.log", "a+b"), .log_print = stdout};
+    Options options = {.do_help = false, .do_clean = false, .do_print_log = false, .do_infinity = false,
+                       .logout_name = DEFAULT_USER_LOGOUT, .logout = fopen(DEFAULT_USER_LOGOUT, "a+b"),
+                       .out = stdout, .print_log = stdout};
     assert(options.logout && "options.logout is nullptr");
 
     FlagCode fill_Options_code = FLAG_FAILURE;
@@ -37,10 +38,33 @@ int main(const int argc,const char* argv[])
         return -1;
     }
 
-    if (options.help)
-        command_help(&options);
+    if (options.do_help)
+    {
+        if (command_help(&options) != FLAG_SUCCESS)
+        {
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+            return -1;
+        }
+    }
+    if (options.do_clean)
+    {
+        if (command_clean(&options) != FLAG_SUCCESS)
+        {
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+            return -1;
+        }
+    }
+    if (options.do_print_log)
+    {
+        if (command_print_log(&options) != FLAG_SUCCESS)
+        {
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+            return -1;
+        }
+    }
 
 #endif /* TEST */
+
     return 0;
 }
 
