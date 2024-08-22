@@ -90,6 +90,7 @@ FlagCode fill_Options(Options*const options, const size_t argc,const char * cons
 FlagCode command_help(Options*const options);
 FlagCode command_clean(Options*const options);
 FlagCode command_print_log(Options*const options);
+FlagCode command_infinity(Options*const options); // TODO - implementation and run.h and run.cpp
 
 
 

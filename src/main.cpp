@@ -38,27 +38,40 @@ int main(const int argc,const char* argv[])
         return -1;
     }
 
+    //NOTE - можно использовать указатель на функцию в массиве и пройтись циклом
     if (options.do_help)
     {
-        if (command_help(&options) != FLAG_SUCCESS)
+        FlagCode help_code = FLAG_FAILURE;
+        if ((help_code = command_help(&options)) != FLAG_SUCCESS)
         {
-            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)help_code);
             return -1;
         }
     }
     if (options.do_clean)
     {
-        if (command_clean(&options) != FLAG_SUCCESS)
+        FlagCode clean_code = FLAG_FAILURE;
+        if ((clean_code = command_clean(&options)) != FLAG_SUCCESS)
         {
-            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)clean_code);
             return -1;
         }
     }
     if (options.do_print_log)
     {
-        if (command_print_log(&options) != FLAG_SUCCESS)
+        FlagCode print_log_code = FLAG_FAILURE;
+        if ((print_log_code = command_print_log(&options)) != FLAG_SUCCESS)
         {
-            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)fill_Options_code);
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)print_log_code);
+            return -1;
+        }
+    }
+    if (options.do_infinity)
+    {
+        FlagCode infinity_code = FLAG_FAILURE;
+        if ((infinity_code = command_infinity(&options)) != FLAG_SUCCESS)
+        {
+            fprintf(stderr, RED_TEXT "FLAGS_FAILURE\t error code = %d\n" NORMAL_TEXT, (int)infinity_code);
             return -1;
         }
     }

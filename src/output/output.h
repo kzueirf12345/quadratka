@@ -8,6 +8,7 @@
 #include "../structs/structs.h"
 
 //TODO: log_out in run
+//NOTE - надо сохранять в отдельной переменной не привязанной к запуску проги имя файла лога
 
 enum OutputCode
 {

@@ -164,3 +164,10 @@ FlagCode command_print_log(Options* const options) {
     }
     return FLAG_SUCCESS;
 }
+
+FlagCode command_infinity(Options* const options)
+{ 
+    assert(options && "options is nullptr");
+
+    
+}
