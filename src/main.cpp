@@ -15,7 +15,7 @@
 int run_test();
 int run_user();
 
-int main()
+int main(int argc, char* argv[])
 {
 #ifdef TEST
     return run_test();

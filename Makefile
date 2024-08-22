@@ -11,7 +11,8 @@ DIRS = calculate input output structs test utils
 BUILD_DIRS = $(DIRS:%=$(BUILD_DIR)/%)
 
 
-SOURCES_LIST = main.cpp calculate/calculate.cpp input/input.cpp output/output.cpp test/test.cpp
+SOURCES_LIST = main.cpp calculate/calculate.cpp input/input.cpp \
+			   output/output.cpp test/test.cpp
 
 SOURCES_REL_PATH = $(SOURCES_LIST:%=$(SRC_DIR)/%)
 OBJECTS_REL_PATH = $(SOURCES_LIST:%.cpp=$(BUILD_DIR)/%.o)
@@ -24,7 +25,6 @@ build: quadratka.out
 
 start:
 	./quadratka.out
-
 
 
 quadratka.out: $(OBJECTS_REL_PATH)
