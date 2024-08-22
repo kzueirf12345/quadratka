@@ -10,21 +10,86 @@
 #include "test/test.h"
 #include "utils/console.h"
 
-#define TEST
+// #define TEST
 
 int run_test();
-int run_user();
+int run_use();
+
+OutputCode command_print_help(FILE* output_stream);
+OutputCode command_print_log(FILE* output_stream);
 
 int main(int argc, char* argv[])
 {
 #ifdef TEST
-    return run_test();
-#else
-    return run_user();
-#endif
 
+    return run_test() // TODO: argc and argv arguments
+
+#else
+
+    //TODO: log_out in run
+
+    FILE* logout_stream = fopen("./log/test.log", "a+");
+
+    if (argc == 1)
+    {
+        return run_use();
+    }
+
+    FILE* output_stream = stdout;
+    // TODO: custom stream "--file <filename>"
+    // TODO: infinity mode "--infinity"
+    // TODO: clean log "--clean"
+    for (size_t i = 1; i < argc; ++i)
+    {
+        if (argv[i] == "--help")
+        {
+            if (command_print_help(output_stream) == OUTPUT_FAILURE)
+            {
+                fprintf(stderr, 
+                        RED_TEXT "OUTPUT_FAILURE\t ferror(stdout) = %d" NORMAL_TEXT, 
+                        ferror(stdout));
+                return -1;
+            }
+        }
+        else if (argv[i] == "--log")
+        {
+            if (command_print_log(output_stream) == OUTPUT_FAILURE)
+            {
+                fprintf(stderr, 
+                        RED_TEXT "OUTPUT_FAILURE\t ferror(stdout) = %d" NORMAL_TEXT, 
+                        ferror(stdout));
+                return -1;
+            }
+        }
+    }
+
+#endif
     return 0;
 }
+
+OutputCode command_print_help(FILE* output_stream) { 
+    assert(output_stream && "output_stream is nullptr");
+
+    fprintf (
+        output_stream, 
+        "===== QUADRATKA HELP =====\n"
+        "Use: ./quadratka.out [FLAGS]\n"
+        "This program solves second degree equations\n"
+        "\n"
+        "FLAGS:\n"
+        "--clean                \t Clean log\n"
+        "--infinity             \t After solving next equation, the program starts over again\n"
+        "--log  [FILENAME]      \t Changes the file for writing logs."
+            "If file is not found, a new one will be created\n"
+        "--file [FILENAME]        \t Changes the output stream to the file specified by the next parameter."
+            "If file is not found, a new one will be created\n"
+        "--print_log ?[STREAM]  \t Output contents of logout to the file specified by the next parameter."
+            "If [STREAM] not specified, than output will be do in conCole\n"
+        "\n"
+        "Without --infinity the program will run once and after the solution will terminate, leaving a record in the log"
+    );
+}
+
 
 int run_test()
 {
@@ -41,7 +106,7 @@ int run_test()
     return 0;
 }
 
-int run_user() { 
+int run_use() { 
     Coefs coefs = {0, 0, 0};
     if (input(&coefs) == INPUT_FAILURE)
     {
@@ -60,3 +125,4 @@ int run_user() {
 
     return 0;
 }
+
