@@ -44,8 +44,8 @@ InputCode input(Coefs* const coefs) {
 
     InputCode input_code = INPUT_FAILURE;
 
-    constexpr size_t count_coefs = 3;
-    double* coefs_array[3] = {&coefs->a, &coefs->b, &coefs->c};
+    constexpr size_t COUNT_COEFS = 3;
+    double* coefs_array[COUNT_COEFS] = {&coefs->a, &coefs->b, &coefs->c};
     const char* const messages_array[3] = 
         {
             "Input first coef: ",
@@ -53,7 +53,7 @@ InputCode input(Coefs* const coefs) {
             "Input third coef: "
         };
 
-    for (size_t i = 0; i < count_coefs; ++i)
+    for (size_t i = 0; i < COUNT_COEFS; ++i)
     {
         input_code = input_coef(coefs_array[i], messages_array[i]);
         if (input_code == INPUT_FAILURE)

@@ -4,6 +4,8 @@
 
 OutputCode print(FILE* stream, const Answer answer)
 {
+    assert(stream && "stream is nullptr");
+    
     int count_output = 0;
     switch (answer.count_solutions) 
     {

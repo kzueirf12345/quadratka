@@ -2,6 +2,7 @@
 #define SRC_TEST_H
 
 #include <stdio.h>
+#include <math.h>
 
 #include "../structs/structs.h"
 #include "../calculate/calculate.h"

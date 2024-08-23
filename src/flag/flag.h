@@ -33,23 +33,23 @@ struct Flag
     const char* name;
     const char* small_description;
     const char* description;
-    FlagCode (*func)(Options* const options, size_t* const index_argv, 
-        const char* const* const argv, const size_t argc);
+    FlagCode (*func)(Options* const options, int* const index_argv, 
+        const char* const* const argv, const int argc);
 };
 
 
-FlagCode Flag_help(Options* const options, size_t* const index_argv, 
-    const char* const* const argv, const size_t argc);
-FlagCode Flag_clean(Options* const options, size_t* const index_argv, 
-    const char* const* const argv, const size_t argc);
-FlagCode Flag_infinity(Options* const options, size_t* const index_argv, 
-    const char* const* const argv, const size_t argc);
-FlagCode Flag_log(Options* const options, size_t* const index_argv, 
-    const char* const* const argv, const size_t argc);
-FlagCode Flag_file(Options* const options, size_t* const index_argv, 
-    const char* const* const argv, const size_t argc);
-FlagCode Flag_print_log(Options* const options, size_t* const index_argv, 
-    const char* const* const argv, const size_t argc);
+FlagCode Flag_help(Options* const options, int* const index_argv, 
+    const char* const* const argv, const int argc);
+FlagCode Flag_clean(Options* const options, int* const index_argv, 
+    const char* const* const argv, const int argc);
+FlagCode Flag_infinity(Options* const options, int* const index_argv, 
+    const char* const* const argv, const int argc);
+FlagCode Flag_log(Options* const options, int* const index_argv, 
+    const char* const* const argv, const int argc);
+FlagCode Flag_file(Options* const options, int* const index_argv, 
+    const char* const* const argv, const int argc);
+FlagCode Flag_print_log(Options* const options, int* const index_argv, 
+    const char* const* const argv, const int argc);
 
 
 constexpr size_t FLAGS_SIZE = 6;
@@ -73,19 +73,19 @@ constexpr Flag FLAGS[FLAGS_SIZE] =
         "If [STREAM] not specified, than output will be do in console. "
         "To use the console as the output stream, enter "
         KWORD_TO_STDOUT
-        " in place of the file name", 
+        " in [STREAM]", 
         .func = Flag_file},
     (Flag){.name = "--print_log", .small_description = "--print_log ?[STREAM]",
         .description = "Output contents of logout to the file specified by the next parameter. "
         "If [STREAM] not specified, than output will be do in console. "
         "To use the console as the output stream, enter "
         KWORD_TO_STDOUT
-        " in place of the file name", 
+        " in [STREAM]", 
         .func = Flag_print_log}
 };
 
 
-FlagCode fill_Options(Options*const options, const size_t argc,const char * const * const argv);
+FlagCode fill_Options(Options*const options, const int argc,const char * const * const argv);
 
 FlagCode command_help(Options*const options);
 FlagCode command_clean(Options*const options);

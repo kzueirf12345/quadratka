@@ -1,50 +1,63 @@
 #include "flag.h"
 
-FlagCode Flag_help(Options* const options, size_t* const index_argv, 
-        const char* const* const argv, const size_t argc)
+FlagCode Flag_help(Options* const options, int* const index_argv, 
+        const char* const* const argv, const int argc)
 {
     assert(options && "options is nullptr");
     assert(index_argv && "index_argv is nullptr");
     assert(argv && "options is nullptr");
+
+    (void) index_argv;
+    (void) argv;
+    (void) argc;
 
     options->do_help = true;
 
     return FLAG_SUCCESS;
 }
 
-FlagCode Flag_clean(Options* const options, size_t* const index_argv, const char* const* const argv,
-                    const size_t argc) {
+FlagCode Flag_clean(Options* const options, int* const index_argv, const char* const* const argv,
+                    const int argc) {
     assert(options && "options is nullptr");
     assert(index_argv && "index_argv is nullptr");
     assert(argv && "options is nullptr");
+
+    (void) index_argv;
+    (void) argv;
+    (void) argc;
 
     options->do_clean = true;
 
     return FLAG_SUCCESS;
 }
 
-FlagCode Flag_infinity(Options* const options, size_t* const index_argv,
-                       const char* const* const argv, const size_t argc) {
+FlagCode Flag_infinity(Options* const options, int* const index_argv,
+                       const char* const* const argv, const int argc) {
     assert(options && "options is nullptr");
     assert(index_argv && "index_argv is nullptr");
     assert(argv && "options is nullptr");
+
+    (void) index_argv;
+    (void) argv;
+    (void) argc;
 
     options->do_infinity = true;
 
     return FLAG_SUCCESS;
 }
 
-FlagCode Flag_log(Options* const options, size_t* const index_argv, const char* const* const argv,
-                  const size_t argc) {
+FlagCode Flag_log(Options* const options, int* const index_argv, const char* const* const argv,
+                  const int argc) {
     assert(options && "options is nullptr");
     assert(index_argv && "index_argv is nullptr");
     assert(argv && "options is nullptr");
 
     if (*index_argv == argc - 1)
+    {
         if (!(options->logout = fopen((options->logout_name = DEFAULT_USER_LOGOUT), "a+b")))
             return FLAG_FAILURE;
         return FLAG_SUCCESS;
-    
+    }
 
     if (!(options->logout = fopen((options->logout_name = argv[++*index_argv]), "a+b")))
         return FLAG_FAILURE;
@@ -52,16 +65,18 @@ FlagCode Flag_log(Options* const options, size_t* const index_argv, const char* 
     return FLAG_SUCCESS;
 }
 
-FlagCode Flag_file(Options* const options, size_t* const index_argv, const char* const* const argv,
-                   const size_t argc) {
+FlagCode Flag_file(Options* const options, int* const index_argv, const char* const* const argv,
+                   const int argc) {
     assert(options && "options is nullptr");
     assert(index_argv && "index_argv is nullptr");
     assert(argv && "options is nullptr");
 
     if (*index_argv == argc - 1)
+    {
         options->out = stdout;
         return FLAG_SUCCESS;
-    
+    }
+
     const char* const filename = argv[++*index_argv];
     if (strcmp(filename,KWORD_TO_STDOUT) == 0)
         options->out = stdout;
@@ -71,16 +86,18 @@ FlagCode Flag_file(Options* const options, size_t* const index_argv, const char*
     return FLAG_SUCCESS;
 }
 
-FlagCode Flag_print_log(Options* const options, size_t* const index_argv,
-                        const char* const* const argv, const size_t argc) {
+FlagCode Flag_print_log(Options* const options, int* const index_argv,
+                        const char* const* const argv, const int argc) {
     assert(options && "options is nullptr");
     assert(index_argv && "index_argv is nullptr");
     assert(argv && "options is nullptr");
 
     if (*index_argv == argc - 1)
+    {
         options->print_log = stdout;
         return FLAG_SUCCESS;
-    
+    }
+
     const char* const filename = argv[++*index_argv];
     if (strcmp(filename, KWORD_TO_STDOUT) == 0)
         options->print_log = stdout;
@@ -90,11 +107,12 @@ FlagCode Flag_print_log(Options* const options, size_t* const index_argv,
     return FLAG_SUCCESS;
 }
 
-FlagCode fill_Options(Options*const options, const size_t argc,const char * const * const argv)
+FlagCode fill_Options(Options*const options, const int argc,const char * const * const argv)
 {
     assert(options && "options is nullptr");
+    assert(argv && "argv is nullptr");
 
-    for (size_t i = 1; i < argc; ++i)
+    for (int i = 1; i < argc; ++i)
     {
         for (size_t j = 0; j < FLAGS_SIZE; ++j)
         {
@@ -156,18 +174,20 @@ FlagCode command_clean(Options* const options)
 FlagCode command_print_log(Options* const options) { 
     assert(options && "options is nullptr");
 
-    unsigned char symbol = '\0';
+    int symbol = '\0';
     while ((symbol = getc(options->logout)) != EOF)
     {
-        if (fprintf(options->print_log, "%c", symbol) <= 0)
+        if (fprintf(options->print_log, "%c", (char)symbol) <= 0)
             return FLAG_FAILURE;
     }
     return FLAG_SUCCESS;
 }
 
-FlagCode command_infinity(Options* const options)
+FlagCode command_infinity(Options* const options) //TODO
 { 
     assert(options && "options is nullptr");
 
-    
+    (void) options;
+
+    return FLAG_SUCCESS;
 }

@@ -1,5 +1,7 @@
 #include "test.h"
 
+constexpr const char* const SEPARATING_LINE = "======================\n";
+
 #include "../utils/console.h"
 
 bool is_equal_answer(const Answer answer1, const Answer answer2)
@@ -21,23 +23,21 @@ OutputCode print_incorrect_test_case(FILE* stream,
     const size_t num_test_case, const TestCase test_case, const Answer answer)
 {
     assert(stream && "stream is nullptr");
+    assert(std::isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
+    assert(std::isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
+    assert(std::isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
 
-    fprintf(stream, "======================\n");
+    fprintf(stream, SEPARATING_LINE);
 
-    char first_message[100] = {};
-    if (stream == stdout)
-    {
-        if (sprintf(first_message, 
-                    BOLD_TEXT "Test_case №%lu is " 
-                    RED_TEXT "INcorrect" BLACK_TEXT "!" NORMAL_TEXT,
-                    num_test_case) <= 0)
-            return OUTPUT_FAILURE;
-    }
-    else
-    {
-        if (sprintf(first_message, "Test_case №%lu is INcorrect!", num_test_case) <= 0)
-            return OUTPUT_FAILURE;
-    }
+    constexpr size_t FIRST_MESSAGE_SIZE = 128;
+    char first_message[FIRST_MESSAGE_SIZE] = {};
+
+    if (stream == stdout && 
+        snprintf(first_message, FIRST_MESSAGE_SIZE, BOLD_TEXT("Test_case №%lu is " 
+        RED_TEXT("INcorrect") "!"), num_test_case) <= 0)
+        return OUTPUT_FAILURE;
+    else if (snprintf(first_message,FIRST_MESSAGE_SIZE, "Test_case №%lu is INcorrect!", num_test_case) <= 0)
+        return OUTPUT_FAILURE;
 
     if (fprintf(stream, 
                 "%s\n"
@@ -55,45 +55,40 @@ OutputCode print_incorrect_test_case(FILE* stream,
     if (print(stream, answer) == OUTPUT_FAILURE) 
         return OUTPUT_FAILURE;
     
-    fprintf(stream, "======================\n");
+    fprintf(stream, SEPARATING_LINE); //DEFINE or constexpr
 
     return OUTPUT_SUCCESS;
 }
 
-OutputCode print_correct_test_case(FILE* stream, 
-    const size_t num_test_case, const TestCase test_case)
+OutputCode print_correct_test_case(FILE* stream, const size_t num_test_case, const TestCase test_case)
 {
     assert(stream && "stream is nullptr");
+    assert(std::isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
+    assert(std::isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
+    assert(std::isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
 
-    fprintf(stream, "======================\n");
+    fprintf(stream, SEPARATING_LINE);
 
-    char first_message[100] = {};
-    if (stream == stdout)
-    {
-        if (sprintf(first_message, 
-                    BOLD_TEXT "Test_case №%lu is " 
-                    GREEN_TEXT "correct" BLACK_TEXT "!" NORMAL_TEXT,
-                    num_test_case) <= 0)
-            return OUTPUT_FAILURE;
-    }
-    else
-    {
-        if (sprintf(first_message, "Test_case №%lu is correct!", num_test_case) <= 0)
-            return OUTPUT_FAILURE;
-    }
+    constexpr size_t FIRST_MESSAGE_SIZE = 128;
+    char first_message[FIRST_MESSAGE_SIZE] = {};
+    if (stream == stdout && 
+        snprintf(first_message, FIRST_MESSAGE_SIZE, BOLD_TEXT("Test_case №%lu is "
+        GREEN_TEXT("correct") "!"), num_test_case) <= 0)
+        return OUTPUT_FAILURE;
+    else if (snprintf(first_message,FIRST_MESSAGE_SIZE, "Test_case №%lu is correct!", num_test_case) <= 0)
+        return OUTPUT_FAILURE;
 
     if (fprintf(stream, 
                 "%s\n"
                 "Coefs: %g, %g, %g\n",
-                first_message,
-                test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
+                first_message, test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
         return OUTPUT_FAILURE;
 
     fprintf(stream, "Answer: ");
     if (print(stream, test_case.answer) == OUTPUT_FAILURE) 
         return OUTPUT_FAILURE;
     
-    fprintf(stream, "======================\n");
+    fprintf(stream, SEPARATING_LINE);
 
     return OUTPUT_SUCCESS;
 }
@@ -101,6 +96,9 @@ OutputCode print_correct_test_case(FILE* stream,
 TestCode testing(FILE* stream, const size_t num_test_case, const TestCase test_case)
 {
     assert(stream && "stream is nullptr");
+    assert(std::isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
+    assert(std::isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
+    assert(std::isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
 
     Answer answer = calculate(test_case.coefs);
 
@@ -108,11 +106,13 @@ TestCode testing(FILE* stream, const size_t num_test_case, const TestCase test_c
     {
         if (print_incorrect_test_case(stream, num_test_case, test_case, answer) == OUTPUT_FAILURE)
             return TEST_FAILURE;
+
         return TEST_INCORRECT;
     }
 
     if (print_correct_test_case(stream, num_test_case, test_case) == OUTPUT_FAILURE)
         return TEST_FAILURE;
+
     return TEST_SUCCESS;
 }
 
@@ -120,8 +120,7 @@ TestCode global_testing(FILE* test_log)
 { 
     assert(test_log && "test log is nullptr");
 
-    static constexpr size_t TEST_CASES_SIZE = 8;
-    static const TestCase test_cases[TEST_CASES_SIZE] =
+    static constexpr TestCase test_cases[] =
         {
             (TestCase){(Coefs){0, 0, 0},(Answer){NAN, NAN, INF_SOLUTIONS}},
             (TestCase){(Coefs){0, 0, 12},(Answer){NAN, NAN, ZERO_SOLUTIONS}},
@@ -132,6 +131,8 @@ TestCode global_testing(FILE* test_log)
             (TestCase){(Coefs){1, 7, -8},(Answer){1, -8, TWO_SOLUTIONS}},
             (TestCase){(Coefs){-8, 7, 1},(Answer){1, -1*1./8, TWO_SOLUTIONS}}
         };
+
+    static constexpr size_t TEST_CASES_SIZE = sizeof(test_cases)/sizeof(*test_cases);
 
     for (size_t i = 0; i < TEST_CASES_SIZE; ++i)
     {
