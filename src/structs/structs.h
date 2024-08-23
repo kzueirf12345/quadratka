@@ -26,4 +26,11 @@ struct Answer
     CountSolutions count_solutions;
 };
 
+struct TestCase
+{
+    int num;
+    Coefs coefs;
+    Answer answer;
+};
+
 #endif /* SRC_STRUCTS_H */

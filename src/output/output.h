@@ -7,8 +7,7 @@
 #include "../utils/utils.h"
 #include "../structs/structs.h"
 
-//TODO: log_out in run
-//NOTE - надо сохранять в отдельной переменной не привязанной к запуску проги имя файла лога
+constexpr const char* const SEPARATING_LINE = "======================\n";
 
 enum OutputCode
 {
@@ -25,5 +24,7 @@ inline double fix_double_zero(double num) {
 }
 
 OutputCode print(FILE* stream, const Answer answer);
+
+OutputCode print_test_case(FILE* stream, const TestCase test_case);
 
 #endif /* SRC_OUTPUT_H */

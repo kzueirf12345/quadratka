@@ -22,15 +22,17 @@ FLAGS = -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizat
 DEBUG_FLAGS = -D _DEBUG
 RELEASE_FLAGS = -DNDEBUG
 
-FLAGS += $(if $(release),$(RELEASE_FLAGS),$(DEBUG_FLAGS))
+FLAGS += $(if $(debug_),$(DEBUG_FLAGS),$(RELEASE_FLAGS))
 
-DIRS = calculate input output structs test utils flag
+DIRS = calculate input output structs test utils flag command
 
 BUILD_DIRS = $(DIRS:%=$(BUILD_DIR)/%)
 
 
 SOURCES_LIST = main.cpp calculate/calculate.cpp input/input.cpp \
-			   output/output.cpp test/test.cpp flag/flag.cpp
+			   output/output.cpp test/test.cpp \
+			   flag/flag_fill.cpp flag/flag_funcs.cpp \
+			   command/command.cpp
 
 SOURCES_REL_PATH = $(SOURCES_LIST:%=$(SRC_DIR)/%)
 OBJECTS_REL_PATH = $(SOURCES_LIST:%.cpp=$(BUILD_DIR)/%.o)
