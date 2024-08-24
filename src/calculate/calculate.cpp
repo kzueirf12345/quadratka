@@ -2,6 +2,7 @@
 
 #include "../utils/utils.h"
 
+
 Answer linear_calculate(const Coefs coefs)
 {
     assert(std::isfinite(coefs.a) && "coefs.a is not finite");
@@ -47,6 +48,7 @@ Answer quadratic_calculate(const Coefs coefs)
     }
     return answer;
 }
+
 
 Answer calculate(const Coefs coefs)
 {

@@ -1,8 +1,9 @@
 #include "flag_funcs.h"
 
+
 FlagCode Flag_help(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc)
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
 {
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
@@ -20,8 +21,9 @@ FlagCode Flag_help(FlagCode (** const flag_commands)(FlagStreams* const streams)
 }
 
 FlagCode Flag_clean(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");
@@ -38,8 +40,9 @@ FlagCode Flag_clean(FlagCode (** const flag_commands)(FlagStreams* const streams
 }
 
 FlagCode Flag_infinity(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");
@@ -56,8 +59,9 @@ FlagCode Flag_infinity(FlagCode (** const flag_commands)(FlagStreams* const stre
 }
 
 FlagCode Flag_log(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");
@@ -79,8 +83,9 @@ FlagCode Flag_log(FlagCode (** const flag_commands)(FlagStreams* const streams),
 }
 
 FlagCode Flag_file(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");
@@ -104,8 +109,9 @@ FlagCode Flag_file(FlagCode (** const flag_commands)(FlagStreams* const streams)
 }
 
 FlagCode Flag_print_log(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");
@@ -122,8 +128,9 @@ FlagCode Flag_print_log(FlagCode (** const flag_commands)(FlagStreams* const str
 }
 
 FlagCode Flag_test(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");
@@ -140,8 +147,9 @@ FlagCode Flag_test(FlagCode (** const flag_commands)(FlagStreams* const streams)
 }
 
 FlagCode Flag_use(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc) {
+    FlagStreams* const streams, int* const index_argv, 
+    const char* const* const argv, const int argc)
+{
     assert(streams && "streams is nullptr");
     assert(flag_commands && "streams is nullptr");
     assert(index_argv && "index_argv is nullptr");

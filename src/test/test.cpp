@@ -2,20 +2,21 @@
 
 #include "../utils/console.h"
 
+
 bool is_equal_answer(const Answer answer1, const Answer answer2)
 {
     if (answer1.count_solutions != answer2.count_solutions) return false;
 
     if (answer1.count_solutions == TWO_SOLUTIONS)
-    {
-        return is_zero(min(answer1.root1, answer1.root2) - min(answer2.root1, answer2.root2)) &&
-               is_zero(max(answer1.root1, answer1.root2) - max(answer2.root1, answer2.root2));
-    }
+        return is_zero(min(answer1.root1, answer1.root2) - min(answer2.root1, answer2.root2))
+            && is_zero(max(answer1.root1, answer1.root2) - max(answer2.root1, answer2.root2));
+
     if (answer1.count_solutions == ONE_SOLUTIONS)
         return is_zero(answer1.root1 - answer2.root1);
     
     return true;
 }
+
 
 OutputCode print_incorrect_test_case(FILE* stream, const TestCase test_case, const Answer answer)
 {
@@ -43,7 +44,7 @@ OutputCode print_incorrect_test_case(FILE* stream, const TestCase test_case, con
 }
 
 OutputCode print_correct_test_case(FILE* stream, const TestCase test_case)
-{
+{ // TODO flag
     assert(stream && "stream is nullptr");
     assert(std::isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
     assert(std::isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
@@ -91,22 +92,22 @@ TestCode global_testing(FILE* test_log)
     assert(test_log && "test log is nullptr");
 
     static constexpr TestCase test_cases[] =
-        {
-            (TestCase){-1,(Coefs){0, 0, 0},(Answer){NAN, NAN, INF_SOLUTIONS}},
-            (TestCase){-1,(Coefs){0, 0, 12},(Answer){NAN, NAN, ZERO_SOLUTIONS}},
-            (TestCase){-1,(Coefs){0, 7, 0},(Answer){0, NAN, ONE_SOLUTIONS}},
-            (TestCase){-1,(Coefs){0, 7, 12},(Answer){-12*1./7, NAN, ONE_SOLUTIONS}},
-            (TestCase){-1,(Coefs){0, 7, -12},(Answer){12*1./7, -3, ONE_SOLUTIONS}},
-            (TestCase){-1,(Coefs){1, 7, 12},(Answer){-4, -3, TWO_SOLUTIONS}},
-            (TestCase){-1,(Coefs){1, 7, -8},(Answer){1, -8, TWO_SOLUTIONS}},
-            (TestCase){-1,(Coefs){-8, 7, 1},(Answer){1, -1*1./8, TWO_SOLUTIONS}}
-        };
-
-    static constexpr int TEST_CASES_SIZE = sizeof(test_cases)/sizeof(*test_cases);
+    { // TODO table
+        (TestCase){-1,(Coefs){0, 0, 0},(Answer){NAN, NAN, INF_SOLUTIONS}},
+        (TestCase){-1,(Coefs){0, 0, 12},(Answer){NAN, NAN, ZERO_SOLUTIONS}},
+        (TestCase){-1,(Coefs){0, 7, 0},(Answer){0, NAN, ONE_SOLUTIONS}},
+        (TestCase){-1,(Coefs){0, 7, 12},(Answer){-12*1./7, NAN, ONE_SOLUTIONS}},
+        (TestCase){-1,(Coefs){0, 7, -12},(Answer){12*1./7, -3, ONE_SOLUTIONS}},
+        (TestCase){-1,(Coefs){1, 7, 12},(Answer){-4, -3, TWO_SOLUTIONS}},
+        (TestCase){-1,(Coefs){1, 7, -8},(Answer){1, -8, TWO_SOLUTIONS}},
+        (TestCase){-1,(Coefs){-8, 7, 1},(Answer){1, -1*1./8, TWO_SOLUTIONS}}
+    };
+    constexpr int TEST_CASES_SIZE = sizeof(test_cases)/sizeof(*test_cases);
 
     for (int i = 0; i < TEST_CASES_SIZE; ++i)
     {
-        if (testing(test_log, (TestCase){i, test_cases[i].coefs, test_cases[i].answer}) == TEST_FAILURE)
+        if (testing(test_log, (TestCase){i, test_cases[i].coefs, test_cases[i].answer})
+            == TEST_FAILURE)
             return TEST_FAILURE;
     }
     fprintf(test_log, "\n"); // NOTE - for nice format

@@ -7,9 +7,10 @@
 
 constexpr Flag FLAGS[] = 
 {
-    (Flag){.name = "--help", .small_description = nullptr, .description = nullptr, .func = Flag_help},
-    (Flag){.name = "--clean", .small_description = "--clean", 
-        .description = "Clean log", .func = Flag_clean},
+    (Flag){.name = "--help", .small_description = nullptr, .description = nullptr,
+        .func = Flag_help},
+    (Flag){.name = "--clean", .small_description = "--clean", .description = "Clean log", 
+        .func = Flag_clean},
     (Flag){.name = "--infinity", .small_description = "--infinity ",
         .description = "Standard mode of the program. "
         "After solving another one equation, the program starts over again. "
@@ -46,6 +47,7 @@ constexpr Flag FLAGS[] =
         "or to the console if it is not specified", 
         .func = Flag_use}
 };
-constexpr size_t FLAGS_SIZE = sizeof(FLAGS)/sizeof(*FLAGS);
+constexpr size_t FLAGS_SIZE = sizeof(FLAGS) / sizeof(*FLAGS);
+
 
 #endif /* SRC_FLAG_CONSTANTS_H */

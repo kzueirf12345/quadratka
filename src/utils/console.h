@@ -1,6 +1,7 @@
 #ifndef SRC_CONSOLE_H
 #define SRC_CONSOLE_H
 
+
 #define NORMAL_FORMAT "\e[0m"
 
 

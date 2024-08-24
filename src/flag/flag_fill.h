@@ -1,6 +1,7 @@
 #ifndef SRC_FLAG_H
 #define SRC_FLAG_H
 
+
 #include <string.h>
 
 #include "../output/output.h"

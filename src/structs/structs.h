@@ -1,7 +1,9 @@
 #ifndef SRC_STRUCTS_H
 #define SRC_STRUCTS_H
 
+
 #include <math.h>
+
 
 enum CountSolutions
 {
@@ -9,8 +11,9 @@ enum CountSolutions
     ONE_SOLUTIONS  = 1,
     TWO_SOLUTIONS  = 2,
     INF_SOLUTIONS  = 808,
-    NOT_REAL_SOLUTIONS = 2286661337
+    NOT_REAL_SOLUTIONS = 2'286'661'337
 };
+
 
 struct Coefs
 {
@@ -32,5 +35,6 @@ struct TestCase
     Coefs coefs;
     Answer answer;
 };
+
 
 #endif /* SRC_STRUCTS_H */

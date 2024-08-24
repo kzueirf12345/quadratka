@@ -2,6 +2,7 @@
 
 #include "../utils/console.h"
 
+
 OutputCode print(FILE* stream, const Answer answer)
 {
     assert(stream && "stream is nullptr");
@@ -38,16 +39,17 @@ OutputCode print(FILE* stream, const Answer answer)
         }
         default: 
         {
-            assert(0 && "Unknown error\n");
+            assert(!"Unknown error\n");
             break;
         }
     }
+
     return count_output > 0 ? OUTPUT_SUCCESS : OUTPUT_FAILURE;
 }
 
 OutputCode print_test_case(FILE* stream, const TestCase test_case)
 {
-    assert(stream && "stream is nullptr");
+    assert(stream && "stream is nullptr"); //TODO std:: remove
     assert(std::isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
     assert(std::isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
     assert(std::isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
@@ -57,11 +59,12 @@ OutputCode print_test_case(FILE* stream, const TestCase test_case)
 
     if (test_case.num >= 0)
     {
-        if (stream == stdout && 
-            snprintf(first_message, FIRST_MESSAGE_SIZE, BOLD_TEXT("Test_case  №%d!"), test_case.num) <= 0)
+        if (stream == stdout && snprintf(first_message, FIRST_MESSAGE_SIZE,
+                BOLD_TEXT("Test_case  №%d!"), test_case.num) <= 0)
             return OUTPUT_FAILURE;
-        if (stream != stdout && 
-            snprintf(first_message, FIRST_MESSAGE_SIZE, "Test_case №%d!", test_case.num) <= 0)
+
+        if (stream != stdout && snprintf(first_message, FIRST_MESSAGE_SIZE, 
+                "Test_case №%d!", test_case.num) <= 0)
             return OUTPUT_FAILURE;
     }
     else 
@@ -73,7 +76,7 @@ OutputCode print_test_case(FILE* stream, const TestCase test_case)
     }
 
     if (fprintf(stream, "%s\n" "Coefs: %g, %g, %g\n", first_message,
-        test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
+            test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
         return OUTPUT_FAILURE;
 
     fprintf(stream, "Answer: ");
