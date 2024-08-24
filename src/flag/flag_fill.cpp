@@ -20,3 +20,18 @@ FlagCode fill_flag_data(FlagData* const flag_data, const Args args)
 
     return FLAG_SUCCESS;
 }
+
+FlagCode processing_flag_data(FlagData* const flag_data)
+{ 
+    for (size_t option = 0; option < (size_t)FLAG_OPTIONS_SIZE; ++option)
+    {
+        if (flag_data->commands[option])
+        {
+            FlagCode error_flag_code = FLAG_FAILURE;
+            if (flag_data->commands[option](&flag_data->streams) != FLAG_SUCCESS)
+            {
+                return error_flag_code;
+            }
+        }
+    }
+}

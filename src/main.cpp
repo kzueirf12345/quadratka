@@ -18,7 +18,8 @@ int main(const int argc, const char* argv[])
     {
         .commands = {},
         .streams = {.logout_name = DEFAULT_USER_LOGOUT, 
-        .logout = fopen(DEFAULT_USER_LOGOUT, "a+b"), .out = stdout}
+        .logout = fopen(DEFAULT_USER_LOGOUT, "a+b"), .out = stdout} 
+        // FIXME - make default logout independently flags 
     };
     if (!flag_data.streams.logout)
     {
@@ -28,7 +29,15 @@ int main(const int argc, const char* argv[])
 
 
     if (argc == 1)
-        return command_use(&flag_data.streams); //REVIEW - what is it
+    {
+        FlagCode command_use_code = command_use(&flag_data.streams);
+        if (command_use_code != FLAG_SUCCESS)
+        {
+            fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)command_use_code);
+            return -1;
+        }
+        return 0;
+    }
 
 
     FlagCode fill_flag_data_code = fill_flag_data(&flag_data, (Args){.argv = argv, .argc = argc});
@@ -38,22 +47,17 @@ int main(const int argc, const char* argv[])
         return -1;
     }
 
-    for (size_t option = 0; option < (size_t)FLAG_OPTIONS_SIZE; ++option)
+    FlagCode processing_flag_data_code = processing_flag_data(&flag_data);
+    if (processing_flag_data_code!= FLAG_SUCCESS)
     {
-        if (flag_data.commands[option])
-        {
-            FlagCode error_flag_code = FLAG_FAILURE;
-            if (flag_data.commands[option](&flag_data.streams) != FLAG_SUCCESS)
-            {
-                fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
-                    (int)error_flag_code);
-                return -1;
-            }
-        }
+        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
+            (int)processing_flag_data_code);
+        return -1;
     }
 
     return destroy_FlagStreams(&flag_data.streams);
 }
+
 
 int destroy_FlagStreams(FlagStreams* flag_streams)
 {

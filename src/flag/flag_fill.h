@@ -12,5 +12,7 @@
 
 FlagCode fill_flag_data(FlagData* const flag_data, const Args args);
 
+FlagCode processing_flag_data(FlagData* const flag_data);
+
 
 #endif /* SRC_FLAG_H */

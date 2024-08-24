@@ -63,7 +63,7 @@ FlagCode command_print_log(FlagStreams* const streams) {
 }
 
 
-FlagCode command_infinity(FlagStreams* const streams) { //TODO - debug exit
+FlagCode command_infinity(FlagStreams* const streams) { //FIXME - debug exit
     FlagCode command_use_code = FLAG_FAILURE;
     while ((command_use_code = command_use(streams)) == FLAG_SUCCESS);
 
@@ -84,7 +84,7 @@ FlagCode command_test(FlagStreams* const streams) {
     return FLAG_SUCCESS;
 }
 
-FlagCode command_use(FlagStreams* const streams) // TODO flag number of test, maybe static variable
+FlagCode command_use(FlagStreams* const streams) // FIXME - flag number of test, maybe static variable
 { 
     assert(streams && "streams is nullptr");                                                    
     assert(streams->out && "streams->out is nullptr");
