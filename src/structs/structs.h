@@ -11,7 +11,7 @@ enum CountSolutions
     ONE_SOLUTIONS  = 1,
     TWO_SOLUTIONS  = 2,
     INF_SOLUTIONS  = 808,
-    NOT_REAL_SOLUTIONS = 2'286'661'337
+    NOT_REAL_SOLUTIONS = 228'666'1337
 };
 
 

@@ -20,8 +20,8 @@ enum TestCode
 
 bool is_equal_answer(const Answer answer1, const Answer answer2);
 
-OutputCode print_incorrect_test_case(FILE* stream, const TestCase test_case, const Answer answer);
-OutputCode print_correct_test_case(FILE* stream, const TestCase test_case);
+OutputCode print_test_case_correctness(FILE* stream, const TestCase test_case,bool correct = true,
+    const Answer answer = {.root1 = NAN, .root2 = NAN, .count_solutions = TWO_SOLUTIONS});
 
 TestCode testing(FILE* stream, const TestCase test_case);
 TestCode global_testing(FILE* test_log);

@@ -49,10 +49,10 @@ OutputCode print(FILE* stream, const Answer answer)
 
 OutputCode print_test_case(FILE* stream, const TestCase test_case)
 {
-    assert(stream && "stream is nullptr"); //TODO std:: remove
-    assert(std::isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
-    assert(std::isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
-    assert(std::isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
+    assert(stream && "stream is nullptr");
+    assert(isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
+    assert(isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
+    assert(isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
 
     constexpr size_t FIRST_MESSAGE_SIZE = 128;
     char first_message[FIRST_MESSAGE_SIZE] = {};

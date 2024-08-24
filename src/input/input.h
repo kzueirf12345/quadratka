@@ -12,7 +12,8 @@ enum InputCode
 {
     INPUT_SUCCESS   = 0,
     INPUT_FAILURE   = 1,
-    INPUT_INCORRECT = 2
+    INPUT_INCORRECT = 2,
+    INPUT_EXIT      = 3
 };
 
 InputCode flush();

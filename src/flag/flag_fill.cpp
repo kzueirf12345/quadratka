@@ -1,22 +1,18 @@
 #include "flag_fill.h"
 
 
-FlagCode fill_Options(FlagCode (** const flag_commands)(FlagStreams* const streams),
-    FlagStreams* const streams, const int argc, const char * const * const argv)
+FlagCode fill_flag_data(FlagData* const flag_data, const Args args)
 {
-    assert(streams && "streams is nullptr");
-    assert(flag_commands && "streams is nullptr");
-    assert(argv && "argv is nullptr");
+    assert(flag_data && "flag_data is nullptr");
 
-    for (int i = 1; i < argc; ++i)
+    for (int i = 1; i < args.argc; ++i)
     {
         for (size_t j = 0; j < FLAGS_SIZE; ++j)
         {
-            if (strcmp(argv[i], FLAGS[j].name) == 0)
+            if (strcmp(args.argv[i], FLAGS[j].name) == 0)
             {
                 FlagCode flags_func_code = FLAG_FAILURE;
-                if ((flags_func_code = FLAGS[j].func(flag_commands, streams, &i, argv, argc)) 
-                    != FLAG_SUCCESS)
+                if ((flags_func_code = FLAGS[j].func(flag_data, &i, args)) != FLAG_SUCCESS)
                     return flags_func_code;
             }
         }

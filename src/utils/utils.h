@@ -10,6 +10,13 @@ constexpr const char *const DEFAULT_USER_LOGOUT = "./user.log";
 constexpr const char *const DEFAULT_TEST_LOGOUT = "./test.log";
 
 
+struct Args
+{
+    const char* const * const argv;
+    const int argc;
+};
+
+
 inline double max(const double a, const double b) { return a > b ? a : b; }
 inline double min(const double a, const double b) { return a < b ? a : b; }
 

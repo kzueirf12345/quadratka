@@ -7,6 +7,24 @@
 #include "../utils/utils.h"
 
 
+enum FlagCode
+{
+    FLAG_SUCCESS   = 0,
+    FLAG_INCORRECT = 1,
+    FLAG_FAILURE   = 2,
+    FLAG_EXIT      = 3
+};
+
+struct FlagStreams
+{
+    const char* logout_name;
+    FILE* logout;
+
+    FILE* out;
+};
+
+typedef FlagCode(*CommandFuncPtr)(FlagStreams* const streams);
+
 enum FlagOptions
 {
     HELP              = 0,
@@ -18,29 +36,19 @@ enum FlagOptions
     FLAG_OPTIONS_SIZE = 6
 };
 
-struct FlagStreams
+struct FlagData
 {
-    const char* logout_name;
-    FILE* logout;
-
-    FILE* out;
+    CommandFuncPtr commands[(int)FLAG_OPTIONS_SIZE];
+    FlagStreams streams;
 };
 
-enum FlagCode
-{
-    FLAG_SUCCESS   = 0,
-    FLAG_INCORRECT = 1,
-    FLAG_FAILURE   = 2,
-};
 
 struct Flag
 {
     const char* name;
     const char* small_description;
     const char* description;
-    FlagCode (*func)(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
+    FlagCode (*func)(FlagData* const flag_data, int* const index_argv, const Args args);
 };
 
 

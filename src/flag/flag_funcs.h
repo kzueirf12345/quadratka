@@ -9,30 +9,16 @@
 #include "../command/command.h"
 
 
-FlagCode Flag_help(FlagCode (** const flag_commands)(FlagStreams* const streams), // TODO typedef
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_clean(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_infinity(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_log(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_file(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_print_log(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_test(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
-FlagCode Flag_use(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, int* const index_argv, 
-        const char* const* const argv, const int argc);
+FlagCode Flag_log(FlagData* const flag_data, int* const index_argv, const Args args);
+FlagCode Flag_file(FlagData* const flag_data, int* const index_argv, const Args args);
+
+FlagCode Flag_help(FlagData* const flag_data, int* const index_argv, const Args args);
+FlagCode Flag_clean(FlagData* const flag_data, int* const index_argv, const Args args);
+FlagCode Flag_print_log(FlagData* const flag_data, int* const index_argv, const Args args);
+
+FlagCode Flag_infinity(FlagData* const flag_data, int* const index_argv, const Args args);
+FlagCode Flag_test(FlagData* const flag_data, int* const index_argv, const Args args);
+FlagCode Flag_use(FlagData* const flag_data, int* const index_argv, const Args args);
 
 
 #endif /* SRC_FLAG_FUNCS_H */

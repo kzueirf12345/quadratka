@@ -14,31 +14,36 @@ int destroy_FlagStreams(FlagStreams* flag_streams);
 
 int main(const int argc, const char* argv[])
 {
-    FlagStreams flag_streams = {.logout_name = DEFAULT_USER_LOGOUT, 
-        .logout = fopen(DEFAULT_USER_LOGOUT, "a+b"), .out = stdout };
-    assert(flag_streams.logout && "flag_data.logout is nullptr"); // TODO 
+    FlagData flag_data =
+    {
+        .commands = {},
+        .streams = {.logout_name = DEFAULT_USER_LOGOUT, 
+        .logout = fopen(DEFAULT_USER_LOGOUT, "a+b"), .out = stdout}
+    };
+    if (!flag_data.streams.logout)
+    {
+        fprintf(stderr, RED_TEXT("Open logout failure\n"));
+        return -1;
+    }
 
 
     if (argc == 1)
-        return command_use(&flag_streams); //REVIEW - 
-
-    FlagCode (*flag_commands[FLAG_OPTIONS_SIZE])(FlagStreams* const streams) = {};
+        return command_use(&flag_data.streams); //REVIEW - what is it
 
 
-    FlagCode fill_Options_code = FLAG_FAILURE;
-    if ((fill_Options_code = fill_Options(flag_commands, &flag_streams, argc, argv)) 
-        != FLAG_SUCCESS)
+    FlagCode fill_flag_data_code = fill_flag_data(&flag_data, (Args){.argv = argv, .argc = argc});
+    if (fill_flag_data_code != FLAG_SUCCESS && fill_flag_data_code != FLAG_EXIT)
     {
-        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)fill_Options_code);
+        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)fill_flag_data_code);
         return -1;
     }
 
     for (size_t option = 0; option < (size_t)FLAG_OPTIONS_SIZE; ++option)
     {
-        if (flag_commands[option])
+        if (flag_data.commands[option])
         {
             FlagCode error_flag_code = FLAG_FAILURE;
-            if (flag_commands[option](&flag_streams) != FLAG_SUCCESS)
+            if (flag_data.commands[option](&flag_data.streams) != FLAG_SUCCESS)
             {
                 fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
                     (int)error_flag_code);
@@ -47,23 +52,23 @@ int main(const int argc, const char* argv[])
         }
     }
 
-    return destroy_FlagStreams(&flag_streams);
+    return destroy_FlagStreams(&flag_data.streams);
 }
 
 int destroy_FlagStreams(FlagStreams* flag_streams)
 {
     assert(flag_streams && "flag_streams is nullptr");
 
-    if (flag_streams->logout && fclose(flag_streams->logout))
+    if (flag_streams->logout && flag_streams->logout != stdout && fclose(flag_streams->logout))
     {
-        fprintf(stderr, RED_TEXT("Close fail flag_streams.logout failure\n"));
+        fprintf(stderr, RED_TEXT("Close logout failure\n"));
         return -1;
     }
     flag_streams->logout = nullptr;
 
-    if (flag_streams->out && fclose(flag_streams->out))
+    if (flag_streams->out && flag_streams->out != stdout && fclose(flag_streams->out))
     {
-        fprintf(stderr, RED_TEXT("Close fail flag_streams.out failure\n"));
+        fprintf(stderr, RED_TEXT("Close out failure\n"));
         return -1;
     }
     flag_streams->out = nullptr;

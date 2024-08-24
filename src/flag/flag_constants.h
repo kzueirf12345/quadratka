@@ -1,9 +1,11 @@
 #ifndef SRC_FLAG_CONSTANTS_H
 #define SRC_FLAG_CONSTANTS_H
 
+
 #include <stdio.h>
 
 #include "flag_funcs.h"
+
 
 constexpr Flag FLAGS[] = 
 {

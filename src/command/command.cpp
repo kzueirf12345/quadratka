@@ -26,7 +26,7 @@ FlagCode command_help(FlagStreams* const streams)
     }
 
     fprintf(streams->out, "\nWithout --infinity the program will run once and after the "
-            "solution will terminate, leaving a record in the log\n");
+            "solution will terminate, leaving a record in the log\n"); // TODO - add info order of flags
 
     if (fprintf(streams->out, "Error code:\nFAILURE = %d\nINCORRECT = %d\n\n", 
             (int)FLAG_FAILURE, (int)FLAG_INCORRECT) <= 0)
@@ -39,9 +39,6 @@ FlagCode command_clean(FlagStreams* const streams)
 {
     assert(streams && "streams is nullptr");
 
-    if (remove(streams->logout_name))
-        return FLAG_FAILURE;
-    streams->logout_name = DEFAULT_USER_LOGOUT;
 
     if(fclose(streams->logout))
         return FLAG_FAILURE;
@@ -66,10 +63,11 @@ FlagCode command_print_log(FlagStreams* const streams) {
 }
 
 
-FlagCode command_infinity(FlagStreams* const streams) { 
-    while (command_use(streams) == FLAG_SUCCESS);
-    
-    return FLAG_SUCCESS; 
+FlagCode command_infinity(FlagStreams* const streams) { //TODO - debug exit
+    FlagCode command_use_code = FLAG_FAILURE;
+    while ((command_use_code = command_use(streams)) == FLAG_SUCCESS);
+
+    return command_use_code;
 }
 
 FlagCode command_test(FlagStreams* const streams) {
@@ -86,25 +84,33 @@ FlagCode command_test(FlagStreams* const streams) {
     return FLAG_SUCCESS;
 }
 
-FlagCode command_use(FlagStreams* const streams)
+FlagCode command_use(FlagStreams* const streams) // TODO flag number of test, maybe static variable
 { 
-    assert(streams && "streams is nullptr");
+    assert(streams && "streams is nullptr");                                                    
     assert(streams->out && "streams->out is nullptr");
 
+
     Coefs coefs = {NAN, NAN, NAN};
-    if (input(&coefs) == INPUT_FAILURE)
+
+    InputCode input_code = input(&coefs);
+    if (input_code == INPUT_FAILURE)
     {
         fprintf(stderr, RED_TEXT("INPUT_FAILURE\t ferror(stdin) = %d\n"), ferror(stdin));
         return FLAG_FAILURE;
     }
+    if (input_code == INPUT_EXIT)
+        return FLAG_EXIT;
+
 
     const Answer answer = calculate(coefs);
+
     fprintf(stderr, "%s\n", streams->logout_name);
     if (print_test_case(streams->logout, (TestCase){-1,coefs,answer}) == OUTPUT_FAILURE)
     {
         fprintf(stderr, RED_TEXT("OUTPUT_FAILURE\n"));
         return FLAG_FAILURE;
     }
+
 
     printf("Answer: ");
     if (print(streams->out, answer) == OUTPUT_FAILURE)

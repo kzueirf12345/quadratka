@@ -10,8 +10,7 @@
 #include "flag_constants.h"
 
 
-FlagCode fill_Options(FlagCode (** const flag_commands)(FlagStreams* const streams),
-        FlagStreams* const streams, const int argc,const char * const * const argv);
+FlagCode fill_flag_data(FlagData* const flag_data, const Args args);
 
 
 #endif /* SRC_FLAG_H */
