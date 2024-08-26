@@ -7,6 +7,9 @@
 #include "../flag/flag_constants.h"
 
 
+static FlagCode use(FlagStreams* const streams,const int test_number = -1);
+
+
 FlagCode command_help(FlagStreams* const streams)
 {
     assert(streams && "streams is nullptr");
@@ -25,10 +28,23 @@ FlagCode command_help(FlagStreams* const streams)
             return FLAG_FAILURE;
     }
 
-    fprintf(streams->out, "\nWithout --infinity the program will run once and after the "
-            "solution will terminate, leaving a record in the log\n"); // TODO - add info order of flags
+    fprintf(streams->out, "\nWithout flags the program will run once and after the "
+            "solution will terminate, leaving a record in the log\n");
 
-    if (fprintf(streams->out, "Error code:\nFAILURE = %d\nINCORRECT = %d\n\n", 
+
+    fprintf(streams->out, "\nOrder processing flags:\n"
+        "--file, --log, --help, --print_log, --clean, --test, --use, --infinity\n");
+
+    static_assert(HELP == 0);
+    static_assert(PRINT_LOG == 1);
+    static_assert(CLEAN == 2);
+    static_assert(TEST == 3);
+    static_assert(USE == 4);
+    static_assert(INFIN == 5);
+    static_assert(FLAG_OPTIONS_SIZE == 6);
+            
+
+    if (fprintf(streams->out, "\nError codes:\nFAILURE = %d\nINCORRECT = %d\n\n", 
             (int)FLAG_FAILURE, (int)FLAG_INCORRECT) <= 0)
         return FLAG_FAILURE;
 
@@ -45,47 +61,100 @@ FlagCode command_clean(FlagStreams* const streams)
 
     if (!(streams->logout = fopen(streams->logout_name, "w")))
         return FLAG_FAILURE;
+    
+    fprintf(stderr, GREEN_TEXT("\nClean complete!\n"));
 
     return FLAG_SUCCESS;
 }
 
-FlagCode command_print_log(FlagStreams* const streams) { 
+FlagCode command_print_log(FlagStreams* const streams)
+{ 
     assert(streams && "streams is nullptr");
     assert(streams->logout && "streams->logout is nullptr");
 
+
+    if (fclose(streams->logout))
+        return FLAG_FAILURE;
+    if (!(streams->logout = fopen(streams->logout_name, "r")))
+        return FLAG_FAILURE;
+
+
     int symbol = '\0';
+    // fprintf(stderr, "streams->logout = %d\n", fgetc(streams->logout));
+    // fprintf(stderr, "streams->logout_name = %s\n", streams->logout_name);
     while ((symbol = fgetc(streams->logout)) != EOF)
     {
         if (fprintf(streams->out, "%c", (char)symbol) <= 0)
             return FLAG_FAILURE;
     }
+
+
+    if (fclose(streams->logout))
+        return FLAG_FAILURE;
+    if (!(streams->logout = fopen(streams->logout_name, "ab")))
+        return FLAG_FAILURE;
+
+    fprintf(stderr, GREEN_TEXT("\nPrint_log complete!\n"));
+
     return FLAG_SUCCESS;
 }
 
 
-FlagCode command_infinity(FlagStreams* const streams) { //FIXME - debug exit
+FlagCode command_infinity(FlagStreams* const streams)
+{
+    assert(streams && "streams is nullptr");
+    assert(streams->logout && "streams->logout is nullptr");
+
+
+    fprintf(streams->logout, "\nSTART INIFINITY MODE LOG\n");
+
+    int test_number = 0;
     FlagCode command_use_code = FLAG_FAILURE;
-    while ((command_use_code = command_use(streams)) == FLAG_SUCCESS);
+    while ((command_use_code = use(streams, test_number++)) == FLAG_SUCCESS);
+
+    if (command_use_code == FLAG_EXIT)
+        fprintf(stderr, GREEN_TEXT("\nInfinity complete!\n"));
 
     return command_use_code;
 }
 
-FlagCode command_test(FlagStreams* const streams) {
+FlagCode command_test(FlagStreams* const streams) 
+{
     assert(streams && "streams is nullptr");
     assert(streams->logout && "streams->logout is nullptr");
+
+
+    fprintf(streams->logout, "\nSTART TEST MODE LOG\n");
 
     if (global_testing(streams->logout) == TEST_FAILURE)
     {
         fprintf(stderr, RED_TEXT("TEST_FAILURE\n"));
         return FLAG_FAILURE;
     }
-    fprintf(stderr, GREEN_TEXT("Testing complete!\n"));
+    fprintf(stderr, GREEN_TEXT("\nTesting complete!\n"));
 
     return FLAG_SUCCESS;
 }
 
-FlagCode command_use(FlagStreams* const streams) // FIXME - flag number of test, maybe static variable
-{ 
+FlagCode command_use(FlagStreams* const streams)
+{
+    assert(streams && "streams is nullptr");
+    assert(streams->logout && "streams->logout is nullptr");
+
+
+    fprintf(streams->logout, "\nSTART STANDART MODE LOG\n");
+
+    FlagCode use_code = use(streams);
+
+    if (use_code == FLAG_SUCCESS)
+        fprintf(stderr, GREEN_TEXT("\nUse complete!\n"));
+
+    return use_code;
+}
+
+
+static FlagCode use(FlagStreams* const streams, const int test_number)
+{
     assert(streams && "streams is nullptr");                                                    
     assert(streams->out && "streams->out is nullptr");
 
@@ -103,17 +172,15 @@ FlagCode command_use(FlagStreams* const streams) // FIXME - flag number of test,
 
 
     const Answer answer = calculate(coefs);
-
-    fprintf(stderr, "%s\n", streams->logout_name);
-    if (print_test_case(streams->logout, (TestCase){-1,coefs,answer}) == OUTPUT_FAILURE)
+    if (print_test_case(streams->logout, (TestCase){test_number, coefs, answer}) == OUTPUT_FAILURE)
     {
         fprintf(stderr, RED_TEXT("OUTPUT_FAILURE\n"));
         return FLAG_FAILURE;
     }
 
 
-    printf("Answer: ");
-    if (print(streams->out, answer) == OUTPUT_FAILURE)
+    fprintf(streams->out, "Answer: ");
+    if (print_answer(streams->out, answer) == OUTPUT_FAILURE)
     {
         fprintf(stderr, RED_TEXT("OUTPUT_FAILURE\n"));
         return FLAG_FAILURE;

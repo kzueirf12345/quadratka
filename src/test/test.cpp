@@ -26,7 +26,6 @@ OutputCode print_test_case_correctness(FILE* stream, const TestCase test_case, b
     assert(isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
     assert(isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
 
-    fprintf(stream, SEPARATING_LINE);
 
     if (stream == stdout && fprintf(stream, (correct
             ? GREEN_TEXT("CORRECT TEST!\n")
@@ -40,11 +39,9 @@ OutputCode print_test_case_correctness(FILE* stream, const TestCase test_case, b
     if (!correct)
     {
         fprintf(stream, "Your answer: ");
-        if (print(stream, answer) == OUTPUT_FAILURE) 
+        if (print_answer(stream, answer) == OUTPUT_FAILURE) 
             return OUTPUT_FAILURE;
     }
-    
-    fprintf(stream, SEPARATING_LINE);
 
     return OUTPUT_SUCCESS;
 }
@@ -90,7 +87,6 @@ TestCode global_testing(FILE* test_log)
             == TEST_FAILURE)
             return TEST_FAILURE;
     }
-    fprintf(test_log, "\n"); // NOTE - for nice format
 
     return TEST_SUCCESS;
 }

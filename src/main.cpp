@@ -17,26 +17,28 @@ int main(const int argc, const char* argv[])
     FlagData flag_data =
     {
         .commands = {},
-        .streams = {.logout_name = DEFAULT_USER_LOGOUT, 
-        .logout = fopen(DEFAULT_USER_LOGOUT, "a+b"), .out = stdout} 
-        // FIXME - make default logout independently flags 
+        .streams = {.logout_name = DEFAULT_USER_LOGOUT, .logout = nullptr,
+            .out_name = KWORD_TO_STDOUT, .out = nullptr}
     };
-    if (!flag_data.streams.logout)
-    {
-        fprintf(stderr, RED_TEXT("Open logout failure\n"));
-        return -1;
-    }
 
 
     if (argc == 1)
     {
+        FlagCode set_streams_files_code = set_streams_files(&flag_data.streams);
+        if (set_streams_files_code == FLAG_FAILURE)
+        {
+            fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
+                (int)set_streams_files_code);
+            return -1;
+        }
+
         FlagCode command_use_code = command_use(&flag_data.streams);
         if (command_use_code != FLAG_SUCCESS)
         {
             fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)command_use_code);
             return -1;
         }
-        return 0;
+        return destroy_FlagStreams(&flag_data.streams);
     }
 
 
@@ -47,8 +49,15 @@ int main(const int argc, const char* argv[])
         return -1;
     }
 
+    FlagCode set_streams_files_code = set_streams_files(&flag_data.streams);
+    if (set_streams_files_code == FLAG_FAILURE)
+    {
+        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)set_streams_files_code);
+        return -1;
+    }
+
     FlagCode processing_flag_data_code = processing_flag_data(&flag_data);
-    if (processing_flag_data_code!= FLAG_SUCCESS)
+    if (processing_flag_data_code != FLAG_SUCCESS && processing_flag_data_code != FLAG_EXIT)
     {
         fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
             (int)processing_flag_data_code);
@@ -79,4 +88,3 @@ int destroy_FlagStreams(FlagStreams* flag_streams)
     
     return 0;
 }
-

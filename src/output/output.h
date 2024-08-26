@@ -26,7 +26,7 @@ inline double fix_double_zero(double num) {
     return num;
 }
 
-OutputCode print(FILE* stream, const Answer answer);
+OutputCode print_answer(FILE* stream, const Answer answer);
 
 OutputCode print_test_case(FILE* stream, const TestCase test_case);
 

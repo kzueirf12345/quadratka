@@ -3,7 +3,7 @@
 #include "../utils/console.h"
 
 
-OutputCode print(FILE* stream, const Answer answer)
+OutputCode print_answer(FILE* stream, const Answer answer)
 {
     assert(stream && "stream is nullptr");
     
@@ -39,7 +39,7 @@ OutputCode print(FILE* stream, const Answer answer)
         }
         default: 
         {
-            assert(!"Unknown error\n");
+            assert(!"Unknown error");
             break;
         }
     }
@@ -53,6 +53,8 @@ OutputCode print_test_case(FILE* stream, const TestCase test_case)
     assert(isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
     assert(isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
     assert(isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
+
+    fprintf(stream, SEPARATING_LINE);
 
     constexpr size_t FIRST_MESSAGE_SIZE = 128;
     char first_message[FIRST_MESSAGE_SIZE] = {};
@@ -80,8 +82,10 @@ OutputCode print_test_case(FILE* stream, const TestCase test_case)
         return OUTPUT_FAILURE;
 
     fprintf(stream, "Answer: ");
-    if (print(stream, test_case.answer) == OUTPUT_FAILURE) 
+    if (print_answer(stream, test_case.answer) == OUTPUT_FAILURE) 
         return OUTPUT_FAILURE;
+    
+    fprintf(stream, SEPARATING_LINE);
 
     return OUTPUT_SUCCESS;
 }

@@ -11,13 +11,14 @@ constexpr Flag FLAGS[] =
 {
     (Flag){.name = "--help", .small_description = nullptr, .description = nullptr,
         .func = Flag_help},
-    (Flag){.name = "--clean", .small_description = "--clean", .description = "Clean log", 
+    (Flag){.name = "--clean", .small_description = "--clean", .description = "Clean --log file", 
         .func = Flag_clean},
     (Flag){.name = "--infinity", .small_description = "--infinity ",
-        .description = "Standard mode of the program. "
+        .description = "Infinity mode of the program. "
         "After solving another one equation, the program starts over again. "
         "Output the result of the work to the argument of the variable --file "
-        "or to the console if it is not specified", 
+        "or to the console if it is not specified. "
+        "Input ENTER+CTRL+Z (ENTER+CTRL+D for Linux) for end input", 
         .func = Flag_infinity},
     (Flag){.name = "--log", .small_description = "--log ?[STREAM]",
         .description = "Changes the file for writing logs. "

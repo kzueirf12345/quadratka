@@ -20,8 +20,12 @@ struct FlagStreams
     const char* logout_name;
     FILE* logout;
 
+    const char* out_name;
     FILE* out;
 };
+
+FlagCode set_streams_files(FlagStreams* const streams);
+
 
 typedef FlagCode(*CommandFuncPtr)(FlagStreams* const streams);
 

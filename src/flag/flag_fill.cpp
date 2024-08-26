@@ -15,6 +15,8 @@ FlagCode fill_flag_data(FlagData* const flag_data, const Args args)
                 if ((flags_func_code = FLAGS[j].func(flag_data, &i, args)) != FLAG_SUCCESS)
                     return flags_func_code;
             }
+            else
+                return FLAG_INCORRECT;
         }
     }
 
@@ -27,11 +29,12 @@ FlagCode processing_flag_data(FlagData* const flag_data)
     {
         if (flag_data->commands[option])
         {
-            FlagCode error_flag_code = FLAG_FAILURE;
-            if (flag_data->commands[option](&flag_data->streams) != FLAG_SUCCESS)
+            FlagCode error_flag_code = flag_data->commands[option](&flag_data->streams);
+            if (error_flag_code != FLAG_SUCCESS)
             {
                 return error_flag_code;
             }
         }
     }
+    return FLAG_SUCCESS;
 }
