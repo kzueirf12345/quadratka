@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "command/command.h"
-#include "flag/flag_fill.h"
-#include "utils/console.h"
+#include "command/command.hpp"
+#include "flag/flag_fill.hpp"
+#include "utils/console.hpp"
 
 
 /// @brief При необходимости закрывает потоки вывода FlagStreams

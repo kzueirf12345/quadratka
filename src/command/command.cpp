@@ -1,10 +1,10 @@
-#include "command.h"
+#include "command.hpp"
 
-#include "../test/test.h"
-#include "../input/input.h"
-#include "../utils/utils.h"
-#include "../utils/console.h"
-#include "../flag/flag_constants.h"
+#include "../test/test.hpp"
+#include "../input/input.hpp"
+#include "../utils/utils.hpp"
+#include "../utils/console.hpp"
+#include "../flag/flag_constants.hpp"
 
 
 /// @brief Вспомогательная функция для режимов --use и --infinity

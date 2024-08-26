@@ -1,6 +1,6 @@
-#include "test.h"
+#include "test.hpp"
 
-#include "../utils/console.h"
+#include "../utils/console.hpp"
 
 
 bool is_equal_answer(const Answer answer1, const Answer answer2)

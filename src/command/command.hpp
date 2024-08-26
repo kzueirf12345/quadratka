@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-#include "../flag/flag_utils.h"
+#include "../flag/flag_utils.hpp"
 
 /// @brief Выполнение флага --help
 /// @param[out] streams Потоки для вывода

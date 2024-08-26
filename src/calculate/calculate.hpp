@@ -5,7 +5,7 @@
 #include <math.h>
 #include <assert.h>
 
-#include "../structs/structs.h"
+#include "../structs/structs.hpp"
 
 /// @brief Решает случай линейного уравнения, с нулевым первым коэффициентом
 /// @param[in] coefs Коэффициенты решаемого уравнения

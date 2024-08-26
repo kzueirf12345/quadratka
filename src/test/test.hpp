@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "../structs/structs.h"
-#include "../calculate/calculate.h"
-#include "../output/output.h"
+#include "../structs/structs.hpp"
+#include "../calculate/calculate.hpp"
+#include "../output/output.hpp"
 
 
 /// @brief Код окончания работы в функциях тестирования

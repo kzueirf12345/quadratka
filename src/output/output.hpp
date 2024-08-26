@@ -5,8 +5,8 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "../utils/utils.h"
-#include "../structs/structs.h"
+#include "../utils/utils.hpp"
+#include "../structs/structs.hpp"
 
 
 /// @brief Линия для разделения вывода тест-кейсов

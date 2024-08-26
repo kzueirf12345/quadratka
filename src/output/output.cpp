@@ -1,6 +1,6 @@
-#include "output.h"
+#include "output.hpp"
 
-#include "../utils/console.h"
+#include "../utils/console.hpp"
 
 
 OutputCode print_answer(FILE* stream, const Answer answer)

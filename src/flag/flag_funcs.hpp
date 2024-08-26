@@ -5,8 +5,8 @@
 #include <assert.h>
 #include <string.h>
 
-#include "flag_utils.h"
-#include "../command/command.h"
+#include "flag_utils.hpp"
+#include "../command/command.hpp"
 
 
 /// @brief Отмечает в FlagData изменение файла вывода логов.

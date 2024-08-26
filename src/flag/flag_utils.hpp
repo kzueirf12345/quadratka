@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-#include "../utils/utils.h"
+#include "../utils/utils.hpp"
 
 
 /// @brief Код окончания работы в функциях, обрабатывающих флаги

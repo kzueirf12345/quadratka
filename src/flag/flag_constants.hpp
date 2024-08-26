@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-#include "flag_funcs.h"
+#include "flag_funcs.hpp"
 
 
 /// @brief Массив флагов с их описанием

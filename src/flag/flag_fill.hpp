@@ -4,10 +4,10 @@
 
 #include <string.h>
 
-#include "../output/output.h"
-#include "../utils/utils.h"
-#include "../command/command.h"
-#include "flag_constants.h"
+#include "../output/output.hpp"
+#include "../utils/utils.hpp"
+#include "../command/command.hpp"
+#include "flag_constants.hpp"
 
 
 /// @brief Заполняет FlagData для последующей обработки обработки флагов. Вызывает соответствующие

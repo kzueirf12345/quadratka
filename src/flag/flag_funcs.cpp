@@ -1,4 +1,4 @@
-#include "flag_funcs.h"
+#include "flag_funcs.hpp"
 
 
 //REVIEW - FlagCode useless, always return FLAG_SUCCESS

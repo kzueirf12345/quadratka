@@ -1,6 +1,6 @@
-#include "calculate.h"
+#include "calculate.hpp"
 
-#include "../utils/utils.h"
+#include "../utils/utils.hpp"
 
 
 Answer linear_calculate(const Coefs coefs)

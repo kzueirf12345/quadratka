@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "../structs/structs.h"
+#include "../structs/structs.hpp"
 
 
 /// @brief Код окончания работы в фукнциях ввода
