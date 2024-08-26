@@ -55,6 +55,7 @@ build
 .vscode
 .DS_Store
 .cache
--MMD
 
 *.log
+
+doxygen

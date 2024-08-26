@@ -7,6 +7,7 @@
 #include "flag_funcs.h"
 
 
+/// @brief Массив флагов с их описанием
 constexpr Flag FLAGS[] = 
 {
     (Flag){.name = "--help", .small_description = nullptr, .description = nullptr,
@@ -50,6 +51,7 @@ constexpr Flag FLAGS[] =
         "or to the console if it is not specified", 
         .func = Flag_use}
 };
+/// @brief Размер массива флагов FLAGS
 constexpr size_t FLAGS_SIZE = sizeof(FLAGS) / sizeof(*FLAGS);
 
 

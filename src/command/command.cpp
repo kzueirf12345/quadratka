@@ -7,6 +7,14 @@
 #include "../flag/flag_constants.h"
 
 
+/// @brief Вспомогательная функция для режимов --use и --infinity
+/// @param[out] streams Потоки для вывода
+/// @param[in] test_number Номер теста. При значении -1 номер не печатается.
+/// @return Код окончания работы
+///
+/// Данная функция нужна, чтобы можно было нумеровать, либо же ненумеровать тест-кейсы
+/// в зависимости от используемого флага (--use или --infinity). Вызывает функции input(), calculate(),
+/// print_answer()
 static FlagCode use(FlagStreams* const streams,const int test_number = -1);
 
 
@@ -80,8 +88,6 @@ FlagCode command_print_log(FlagStreams* const streams)
 
 
     int symbol = '\0';
-    // fprintf(stderr, "streams->logout = %d\n", fgetc(streams->logout));
-    // fprintf(stderr, "streams->logout_name = %s\n", streams->logout_name);
     while ((symbol = fgetc(streams->logout)) != EOF)
     {
         if (fprintf(streams->out, "%c", (char)symbol) <= 0)

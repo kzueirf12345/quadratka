@@ -7,10 +7,20 @@
 
 #include "../structs/structs.h"
 
-
+/// @brief Решает случай линейного уравнения, с нулевым первым коэффициентом
+/// @param[in] coefs Коэффициенты решаемого уравнения
+/// @return Ответ на уравнение
 Answer linear_calculate(const Coefs coefs);
+
+/// @brief Решает случай квадратного уравнения, с НЕнулевым первым коэффициентом
+/// @param[in] coefs Коэффициенты решаемого уравнения
+/// @return Ответ на уравнение
 Answer quadratic_calculate(const Coefs coefs);
 
+
+/// @brief Решает квадратное уравнение
+/// @param[in] coefs Коэффициенты решаемого уравнения
+/// @return Ответ на уравнение
 Answer calculate(const Coefs coefs);
 
 

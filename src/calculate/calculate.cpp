@@ -20,6 +20,7 @@ Answer linear_calculate(const Coefs coefs)
     return answer;
 }
 
+
 Answer quadratic_calculate(const Coefs coefs)
 {
     assert(isfinite(coefs.a) && "coefs.a is not finite");
@@ -44,6 +45,7 @@ Answer quadratic_calculate(const Coefs coefs)
     }
     return answer;
 }
+
 
 
 Answer calculate(const Coefs coefs)
