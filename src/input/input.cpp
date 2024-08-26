@@ -2,11 +2,11 @@
 
 InputCode flush()
 {
-    for (int symbol = getchar();
-        symbol != '\n' && symbol != EOF && ferror(stdin) == 0;
+    int symbol = getchar();
+    for (;symbol != '\n' && symbol != EOF && ferror(stdin) == 0;
         symbol = getchar());
 
-    return ferror(stdin) ? INPUT_FAILURE : INPUT_SUCCESS;
+    return ferror(stdin) ? INPUT_FAILURE : (symbol == EOF ? INPUT_EXIT : INPUT_SUCCESS);
 }
 
 InputCode scan_double(double* const num) 
@@ -14,7 +14,7 @@ InputCode scan_double(double* const num)
     assert(num && "num is nullptr");
 
     int correct_scan_count = scanf("%lg", num);
-    int next_symbol = getchar();
+    int next_symbol = (feof(stdin) ? EOF : getchar());
 
     return (ferror(stdin) == 0)
         ? (correct_scan_count == EOF
@@ -40,7 +40,10 @@ InputCode input_coef(double* const num, const char* const message)
         printf("Incorrect input, try again!\n");
         if (printf("%s", message) <= 0)
             return INPUT_FAILURE;
-        flush();
+            
+        InputCode flush_code = flush();
+        if (flush_code == INPUT_FAILURE || flush_code == INPUT_EXIT)
+            return flush_code;
     }
 
     return input_code;

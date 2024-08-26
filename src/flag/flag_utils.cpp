@@ -1,8 +1,11 @@
 #include "flag_utils.hpp"
 
 #include <string.h>
+#include <assert.h>
 
 FlagCode set_streams_files(FlagStreams* const streams) {
+    assert(streams && "streams is nullptr");
+
     if (!(streams->logout = fopen(streams->logout_name, "ab")))
         return FLAG_FAILURE;
     

@@ -21,6 +21,7 @@ static FlagCode use(FlagStreams* const streams,const int test_number = -1);
 FlagCode command_help(FlagStreams* const streams)
 {
     assert(streams && "streams is nullptr");
+    assert(streams->out && "streams->out is nullptr");
 
     fprintf(streams->out, 
             "===== QUADRATKA HELP =====\n"
@@ -62,6 +63,7 @@ FlagCode command_help(FlagStreams* const streams)
 FlagCode command_clean(FlagStreams* const streams)
 {
     assert(streams && "streams is nullptr");
+    assert(streams->logout && "streams->logout is nullptr");
 
 
     if(fclose(streams->logout))
@@ -163,6 +165,7 @@ static FlagCode use(FlagStreams* const streams, const int test_number)
 {
     assert(streams && "streams is nullptr");                                                    
     assert(streams->out && "streams->out is nullptr");
+    assert(streams->logout && "streams->logout is nullptr");
 
 
     Coefs coefs = {NAN, NAN, NAN};

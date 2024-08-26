@@ -7,6 +7,8 @@ FlagCode Flag_log(FlagData* const flag_data, int* const index_argv, const Args a
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(args.argv && "args.argc is nullptr");
+
 
     if (*index_argv == args.argc - 1
         || (flag_data->streams.logout_name = args.argv[++*index_argv])[0] == '-')
@@ -22,6 +24,7 @@ FlagCode Flag_file(FlagData* const flag_data, int* const index_argv, const Args 
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(args.argv && "args.argc is nullptr");
 
     if (*index_argv == args.argc - 1
         || (flag_data->streams.out_name = args.argv[++*index_argv])[0] == '-')
@@ -38,6 +41,7 @@ FlagCode Flag_help(FlagData* const flag_data, int* const index_argv, const Args 
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(flag_data->commands && "flag_data->commands is nullptr");
 
     (void) index_argv;
     (void) args;
@@ -51,6 +55,7 @@ FlagCode Flag_clean(FlagData* const flag_data, int* const index_argv, const Args
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(flag_data->commands && "flag_data->commands is nullptr");
 
     (void) index_argv;
     (void) args;
@@ -64,6 +69,7 @@ FlagCode Flag_print_log(FlagData* const flag_data, int* const index_argv, const 
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(flag_data->commands && "flag_data->commands is nullptr");
 
     (void) index_argv;
     (void) args;
@@ -78,6 +84,8 @@ FlagCode Flag_infinity(FlagData* const flag_data, int* const index_argv, const A
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(flag_data->commands && "flag_data->commands is nullptr");
+
 
     (void) index_argv;
     (void) args;
@@ -91,6 +99,7 @@ FlagCode Flag_test(FlagData* const flag_data, int* const index_argv, const Args 
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(flag_data->commands && "flag_data->commands is nullptr");
 
     (void) index_argv;
     (void) args;
@@ -105,6 +114,7 @@ FlagCode Flag_use(FlagData* const flag_data, int* const index_argv, const Args a
 {
     assert(flag_data && "flag_data is nullptr");
     assert(index_argv && "index_argv is nullptr");
+    assert(flag_data->commands && "flag_data->commands is nullptr");
 
     (void) index_argv;
     (void) args;
