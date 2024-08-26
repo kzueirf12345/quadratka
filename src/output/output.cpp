@@ -2,8 +2,11 @@
 
 #include "../utils/console.h"
 
-OutputCode print(FILE* stream, const Answer answer)
+
+OutputCode print_answer(FILE* stream, const Answer answer)
 {
+    assert(stream && "stream is nullptr");
+    
     int count_output = 0;
     switch (answer.count_solutions) 
     {
@@ -20,8 +23,8 @@ OutputCode print(FILE* stream, const Answer answer)
         case TWO_SOLUTIONS: 
         {
             count_output = fprintf(stream, "x = %g, %g\n", 
-                                            fix_double_zero(answer.root1), 
-                                            fix_double_zero(answer.root2));
+                fix_double_zero(answer.root1), 
+                fix_double_zero(answer.root2));
             break;
         }
         case INF_SOLUTIONS: 
@@ -36,9 +39,53 @@ OutputCode print(FILE* stream, const Answer answer)
         }
         default: 
         {
-            assert(0 && "Unknown error\n");
+            assert(!"Unknown error");
             break;
         }
     }
+
     return count_output > 0 ? OUTPUT_SUCCESS : OUTPUT_FAILURE;
+}
+
+OutputCode print_test_case(FILE* stream, const TestCase test_case)
+{
+    assert(stream && "stream is nullptr");
+    assert(isfinite(test_case.coefs.a) && "test_case.coefs.a is not finite");
+    assert(isfinite(test_case.coefs.b) && "test_case.coefs.b is not finite");
+    assert(isfinite(test_case.coefs.c) && "test_case.coefs.c is not finite");
+
+    fprintf(stream, SEPARATING_LINE);
+
+    constexpr size_t FIRST_MESSAGE_SIZE = 128;
+    char first_message[FIRST_MESSAGE_SIZE] = {};
+
+    if (test_case.num >= 0)
+    {
+        if (stream == stdout && snprintf(first_message, FIRST_MESSAGE_SIZE,
+                BOLD_TEXT("Test_case  №%d!"), test_case.num) <= 0)
+            return OUTPUT_FAILURE;
+
+        if (stream != stdout && snprintf(first_message, FIRST_MESSAGE_SIZE, 
+                "Test_case №%d!", test_case.num) <= 0)
+            return OUTPUT_FAILURE;
+    }
+    else 
+    {
+        if (stream == stdout)
+            snprintf(first_message, FIRST_MESSAGE_SIZE, BOLD_TEXT("Test_case!"));
+        else
+            snprintf(first_message, FIRST_MESSAGE_SIZE, "Test_case!");
+    }
+
+    if (fprintf(stream, "%s\n" "Coefs: %g, %g, %g\n", first_message,
+            test_case.coefs.a, test_case.coefs.b, test_case.coefs.c) <= 0)
+        return OUTPUT_FAILURE;
+
+    fprintf(stream, "Answer: ");
+    if (print_answer(stream, test_case.answer) == OUTPUT_FAILURE) 
+        return OUTPUT_FAILURE;
+    
+    fprintf(stream, SEPARATING_LINE);
+
+    return OUTPUT_SUCCESS;
 }

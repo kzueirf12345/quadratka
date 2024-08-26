@@ -1,14 +1,28 @@
 #ifndef SRC_CONSOLE_H
 #define SRC_CONSOLE_H
 
-#define NORMAL_TEXT "\e[0m"
 
-#define BLACK_TEXT "\e[30m"
-#define RED_TEXT "\e[31m"
-#define GREEN_TEXT "\e[32m"
-#define YELLOW_TEXT "\e[33m"
+#define NORMAL_FORMAT "\e[0m"
 
-#define BOLD_TEXT "\e[1m"
-#define ITALIC_TEXT "\e[2m"
+
+#define BLACK_FORMAT "\e[30m"
+#define BLACK_TEXT(...) BLACK_FORMAT __VA_ARGS__ NORMAL_FORMAT
+
+#define RED_FORMAT "\e[31m"
+#define RED_TEXT(...) RED_FORMAT __VA_ARGS__ NORMAL_FORMAT
+
+#define GREEN_FORMAT "\e[32m"
+#define GREEN_TEXT(...) GREEN_FORMAT __VA_ARGS__ NORMAL_FORMAT
+
+#define YELLOW_FORMAT "\e[33m"
+#define YELLOW_TEXT(...) YELLOW_FORMAT __VA_ARGS__ NORMAL_FORMAT
+
+
+#define BOLD_FORMAT "\e[1m"
+#define BOLD_TEXT(...) BOLD_FORMAT __VA_ARGS__ NORMAL_FORMAT
+
+#define ITALIC_FORMAT "\e[2m"
+#define ITALIC_TEXT(...) ITALIC_FORMAT __VA_ARGS__ NORMAL_FORMAT
+
 
 #endif /* SRC_CONSOLE_H */

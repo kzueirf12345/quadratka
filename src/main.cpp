@@ -4,59 +4,87 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "input/input.h"
-#include "calculate/calculate.h"
-#include "output/output.h"
-#include "test/test.h"
+#include "command/command.h"
+#include "flag/flag_fill.h"
 #include "utils/console.h"
 
-#define TEST
 
-int run_test();
-int run_user();
+int destroy_FlagStreams(FlagStreams* flag_streams);
 
-int main(int argc, char* argv[])
+
+int main(const int argc, const char* argv[])
 {
-#ifdef TEST
-    return run_test();
-#else
-    return run_user();
-#endif
+    FlagData flag_data =
+    {
+        .commands = {},
+        .streams = {.logout_name = DEFAULT_USER_LOGOUT, .logout = nullptr,
+            .out_name = KWORD_TO_STDOUT, .out = nullptr}
+    };
 
-    return 0;
+
+    if (argc == 1)
+    {
+        FlagCode set_streams_files_code = set_streams_files(&flag_data.streams);
+        if (set_streams_files_code == FLAG_FAILURE)
+        {
+            fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
+                (int)set_streams_files_code);
+            return -1;
+        }
+
+        FlagCode command_use_code = command_use(&flag_data.streams);
+        if (command_use_code != FLAG_SUCCESS)
+        {
+            fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)command_use_code);
+            return -1;
+        }
+        return destroy_FlagStreams(&flag_data.streams);
+    }
+
+
+    FlagCode fill_flag_data_code = fill_flag_data(&flag_data, (Args){.argv = argv, .argc = argc});
+    if (fill_flag_data_code != FLAG_SUCCESS && fill_flag_data_code != FLAG_EXIT)
+    {
+        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)fill_flag_data_code);
+        return -1;
+    }
+
+    FlagCode set_streams_files_code = set_streams_files(&flag_data.streams);
+    if (set_streams_files_code == FLAG_FAILURE)
+    {
+        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"), (int)set_streams_files_code);
+        return -1;
+    }
+
+    FlagCode processing_flag_data_code = processing_flag_data(&flag_data);
+    if (processing_flag_data_code != FLAG_SUCCESS && processing_flag_data_code != FLAG_EXIT)
+    {
+        fprintf(stderr, RED_TEXT("FLAGS_FAILURE\t error code = %d\n"),
+            (int)processing_flag_data_code);
+        return -1;
+    }
+
+    return destroy_FlagStreams(&flag_data.streams);
 }
 
-int run_test()
+
+int destroy_FlagStreams(FlagStreams* flag_streams)
 {
+    assert(flag_streams && "flag_streams is nullptr");
+
+    if (flag_streams->logout && flag_streams->logout != stdout && fclose(flag_streams->logout))
+    {
+        fprintf(stderr, RED_TEXT("Close logout failure\n"));
+        return -1;
+    }
+    flag_streams->logout = nullptr;
+
+    if (flag_streams->out && flag_streams->out != stdout && fclose(flag_streams->out))
+    {
+        fprintf(stderr, RED_TEXT("Close out failure\n"));
+        return -1;
+    }
+    flag_streams->out = nullptr;
     
-    FILE* test_log = fopen("log/test.log", "w");
-    if (global_testing(test_log) == TEST_FAILURE)
-    {
-        fprintf(stderr, RED_TEXT "TEST_FAILURE\n" NORMAL_TEXT);
-        fclose(test_log);
-        return -1;
-    }
-    fclose(test_log);
-    fprintf(stderr, GREEN_TEXT "Testing complete!\n" NORMAL_TEXT);
-    return 0;
-}
-
-int run_user() { 
-    Coefs coefs = {0, 0, 0};
-    if (input(&coefs) == INPUT_FAILURE)
-    {
-        fprintf(stderr, RED_TEXT "INPUT_FAILURE\t ferror(stdin) = %d" NORMAL_TEXT, ferror(stdin));
-        return -1;
-    }
-
-    const Answer answer = calculate(coefs);
-
-    printf("Answer: ");
-    if (print(stdout, answer) == OUTPUT_FAILURE)
-    {
-        fprintf(stderr, RED_TEXT "OUTPUT_FAILURE\t ferror(stdout) = %d" NORMAL_TEXT, ferror(stdout));
-        return -1;
-    }
-
     return 0;
 }

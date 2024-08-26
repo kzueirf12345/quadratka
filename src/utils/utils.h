@@ -1,14 +1,31 @@
 #ifndef SRC_UTILS_H
 #define SRC_UTILS_H
 
+
 #include <math.h>
 
 
-static constexpr double EPS = 1e-7;
+#define KWORD_TO_STDOUT "__CONCOLE__"
+constexpr const char *const DEFAULT_USER_LOGOUT = "./user.log";
+
+
+struct Args
+{
+    const char* const * const argv;
+    const int argc;
+};
+
 
 inline double max(const double a, const double b) { return a > b ? a : b; }
 inline double min(const double a, const double b) { return a < b ? a : b; }
 
-inline bool is_zero(double num) { return abs(num) < EPS; }
+
+inline bool is_zero(double num)
+{
+    static constexpr double EPS = 1e-7;
+    
+    return abs(num) < EPS;
+}
+
 
 #endif /* SRC_UTILS_H */
