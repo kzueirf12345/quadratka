@@ -14,7 +14,6 @@ FlagCode Flag_log(FlagData* const flag_data, int* const index_argv, const Args a
         || (flag_data->streams.logout_name = args.argv[++*index_argv])[0] == '-')
     {
         flag_data->streams.logout_name = DEFAULT_USER_LOGOUT;
-        return FLAG_SUCCESS;
     }
 
     return FLAG_SUCCESS;
@@ -30,7 +29,6 @@ FlagCode Flag_file(FlagData* const flag_data, int* const index_argv, const Args 
         || (flag_data->streams.out_name = args.argv[++*index_argv])[0] == '-')
     {
         flag_data->streams.out_name = KWORD_TO_STDOUT;
-        return FLAG_SUCCESS;
     }
 
     return FLAG_SUCCESS;

@@ -29,7 +29,7 @@ sudo apt install g++
 
 Windows:
 
-Ahaha, sorry)
+Ahaha, sorry, idk)
 
 ## Usage
 
@@ -55,7 +55,7 @@ sudo apt-get install doxygen-gui #for casuals
 
 Windows:
 
-Ahaha, sorry 2
+Sorry 2
 
 - Graphviz
 

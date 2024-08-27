@@ -14,7 +14,6 @@
 /// @return Код работы программы (по аналогии с return'ом в main)
 int destroy_FlagStreams(FlagStreams* flag_streams);
 
-// TODO - check asserts and includes
 int main(const int argc, const char* argv[])
 {
     FlagData flag_data =
