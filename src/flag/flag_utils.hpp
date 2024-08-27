@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "../utils/utils.hpp"
+#include "../utils/console.hpp"
 
 
 /// @brief Код окончания работы в функциях, обрабатывающих флаги
@@ -31,6 +32,11 @@ struct FlagStreams
 /// @param[out] streams Потоки для вывода
 /// @return Код окончания работы
 FlagCode set_streams_files(FlagStreams* const streams);
+
+/// @brief При необходимости закрывает потоки вывода FlagStreams
+/// @param flag_streams Потоки вывода
+/// @return Код работы программы (по аналогии с return'ом в main)
+int destroy_FlagStreams(FlagStreams* flag_streams);
 
 
 /// @brief Указатель на функцию выполняющую действие соответсвующее флагу

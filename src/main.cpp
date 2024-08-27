@@ -8,12 +8,6 @@
 #include "flag/flag_fill.hpp"
 #include "utils/console.hpp"
 
-
-/// @brief При необходимости закрывает потоки вывода FlagStreams
-/// @param flag_streams Потоки вывода
-/// @return Код работы программы (по аналогии с return'ом в main)
-int destroy_FlagStreams(FlagStreams* flag_streams);
-
 int main(const int argc, const char* argv[])
 {
     FlagData flag_data =
@@ -67,26 +61,4 @@ int main(const int argc, const char* argv[])
     }
 
     return destroy_FlagStreams(&flag_data.streams);
-}
-
-
-int destroy_FlagStreams(FlagStreams* flag_streams)
-{
-    assert(flag_streams && "flag_streams is nullptr");
-
-    if (flag_streams->logout && flag_streams->logout != stdout && fclose(flag_streams->logout))
-    {
-        fprintf(stderr, RED_TEXT("Close logout failure\n"));
-        return -1;
-    }
-    flag_streams->logout = nullptr;
-
-    if (flag_streams->out && flag_streams->out != stdout && fclose(flag_streams->out))
-    {
-        fprintf(stderr, RED_TEXT("Close out failure\n"));
-        return -1;
-    }
-    flag_streams->out = nullptr;
-    
-    return 0;
 }
