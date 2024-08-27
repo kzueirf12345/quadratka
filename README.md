@@ -72,7 +72,7 @@ Sadness...
 ### Compile
 
 ```bash
-doxygen PATH/TO/DIR/doxygen/doxygen_config.txt
+doxygen PATH/TO/DIR/Doxyfile
 ```
 
 Open with browser ```PATH/TO/DIR/doxygen/html/index.html```
