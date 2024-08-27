@@ -13,8 +13,8 @@
 /// @return Код окончания работы
 ///
 /// Данная функция нужна, чтобы можно было нумеровать, либо же ненумеровать тест-кейсы
-/// в зависимости от используемого флага (--use или --infinity). Вызывает функции input(), calculate(),
-/// print_answer()
+/// в зависимости от используемого флага (--use или --infinity). Вызывает функции input(), 
+/// calculate(), print_answer()
 static FlagCode use(FlagStreams* const streams,const int test_number = -1);
 
 
